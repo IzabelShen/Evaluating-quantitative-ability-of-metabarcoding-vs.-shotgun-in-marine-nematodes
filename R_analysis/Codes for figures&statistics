@@ -1,1 +1,1763 @@
+###########################
+### R scripts for plotting and data visualization 
+### Data from 
+### "Evlauating the quantiative ability of metabarcoding and shotgun in marine nematodes"
+### 
+###Prepared 13 February 2025
+### Author: Dandan Izabel-Shen, HIFMB; dand.shen <at> hifmb.de
+###########################
+
+# Before you start
+# Make sure you are using the latest version of R (and Rstudio)
+#The following packages (and their dependencies) are needed to run the whole analysis 
+
+
+###make figures for manuscript#######
+
+##############################
+####Packages to load #####
+##### 18S#####################
+library("vegan")
+library("ape")
+library("glue")
+library("ggpubr")
+library("gridExtra")
+library("grid")
+library("ggplot2")
+library("gridExtra");packageVersion("gridExtra") #v 2.3
+library("plyr")
+library("cowplot") ### adding A or B to the multiple panels in one figure
+library("phyloseq")
+library("dplyr")
+library("ggthemes") # use themes to clean up the data visualizations 
+library("RColorBrewer") # for multiple color palettes
+
+####################
+#####Plot for PCoA
+####################
+
+#####################
+###18S DNA input#####
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/DNA_input")
+RelaAbun <-read.csv("./RelAbun18S.csv",header=T, row.names=1) #Sample in row, ASV in colum
+bc.d <-vegdist(t(RelaAbun[,1:9]), k=2, method="bray")
+bc.pcoa=cmdscale(bc.d, eig=TRUE)
+bc.pcoa
+
+#percent explained by the first and second axis
+ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
+ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
+# look at the output
+ax1.v.bc *100
+ax2.v.bc *100
+
+# or
+percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
+#'round' function will round our numbers to the one significant digit to the right of the decimal point
+#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
+#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
+#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
+#"trim=True" is trim the white space from the front strings
+pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
+#library("glue") mased from dplyr
+library("dplyr")
+library("glue")
+labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
+  
+Mymeta =data.frame(Type=c("Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
+PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
+PCoA$Type<-factor(PCoA$Type, levels=c("Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
+find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
+hulls <-ddply(PCoA, "Type",find_hull) 
+
+p1 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
+geom_point(aes(shape=Type), size=2.5) + 
+geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
+scale_shape_manual(values=c(15,16,17))+
+theme_bw()+ 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
+theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
+labs(title="18S_DNA input", x=labs[1], y=labs[2]) + 
+theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
+theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
+theme(legend.text=element_text(size=13,family="serif")) + 
+theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
+theme(legend.background=element_rect(fill=NA)) + 
+theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
+theme(legend.title=element_text(color="black", size=12,family='serif')) + 
+guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
+guides(shape=guide_legend(override.aes=list(size=3.6))) + 
+theme(legend.key.size=unit("0.5","cm")) +
+theme(legend.position="none")
+
+
+#####################
+####28S DNA input####
+setwd("/Users/Dandan/Desktop//NEWMockManuscript/28SMockResults/DNAinput")
+RelaAbun <-read.csv("./RelAbun28S_DNA.csv", header=T, row.names=1) #Sample in row, ASV in colum
+#nmds.otu <-nmds.otu <-metaMDS(t(RelaAbun), distance="horn", trymax=200)
+#nmds.otu$stress # 0.0524833
+###NOTE : NMDS plot does not work on this dataset, as NMDS require non-linear 
+######Using PCoA metric instead to plot ######
+
+bc.d <-vegdist(t(RelaAbun), k=2, method="bray")
+bc.pcoa=cmdscale(bc.d, eig=TRUE)
+bc.pcoa
+
+#percent explained by the first and second axis
+ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
+ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
+# look at the output
+ax1.v.bc *100
+ax2.v.bc *100
+
+# or
+percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
+#'round' function will round our numbers to the one significant digit to the right of the decimal point
+#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
+#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
+#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
+#"trim=True" is trim the white space from the front strings
+pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
+#library("glue") mased from dplyr
+#library("dplyr")
+library("glue")
+labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
+  
+Mymeta =data.frame(Type=c("Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
+PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
+PCoA$Type<-factor(PCoA$Type, levels=c("Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
+find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
+hulls <-ddply(PCoA, "Type",find_hull) 
+
+p2 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
+geom_point(aes(shape=Type), size=2.5) + 
+geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
+scale_shape_manual(values=c(15,16,17))+
+theme_bw()+ 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
+theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
+labs(title="28S_DNA input", x=labs[1], y=labs[2]) + 
+theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
+theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
+theme(legend.text=element_text(size=13,family="serif")) + 
+theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
+theme(legend.background=element_rect(fill=NA)) + 
+theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
+theme(legend.title=element_text(color="black", size=12,family='serif')) + 
+guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
+guides(shape=guide_legend(override.aes=list(size=3.6))) + 
+theme(legend.key.size=unit("0.5","cm")) +
+theme(legend.position="none")
+
+######################
+###Shotgun DNA input###
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockDNA")
+RelaAbun <-read.csv("./RelaContigs_DNA.csv",header=T, row.names=1) #Sample in row, ASV in colum
+bc.d <-vegdist(t(RelaAbun[,1:9]), k=2, method="bray")
+bc.pcoa=cmdscale(bc.d, eig=TRUE)
+bc.pcoa
+
+#percent explained by the first and second axis
+ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
+ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
+# look at the output
+ax1.v.bc *100
+ax2.v.bc *100
+
+# or
+percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
+#'round' function will round our numbers to the one significant digit to the right of the decimal point
+#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
+#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
+#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
+#"trim=True" is trim the white space from the front strings
+pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
+#library("glue") mased from dplyr
+#library("dplyr")
+library("glue")
+labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
+  
+Mymeta =data.frame(Type=c("Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
+PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
+PCoA$Type<-factor(PCoA$Type, levels=c("Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
+find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
+hulls <-ddply(PCoA, "Type",find_hull) 
+
+p3 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
+geom_point(aes(shape=Type), size=2.5) + 
+geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
+scale_shape_manual(values=c(15,16,17))+
+theme_bw()+ 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
+theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
+labs(title="Shotgun_DNA input", x=labs[1], y=labs[2]) + 
+theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
+theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
+theme(legend.text=element_text(size=13,family="serif")) + 
+theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
+theme(legend.background=element_rect(fill=NA)) + 
+theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
+theme(legend.title=element_text(color="black", size=12,family='serif')) + 
+guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
+guides(shape=guide_legend(override.aes=list(size=3.6))) + 
+theme(legend.key.size=unit("0.5","cm")) +
+theme(legend.position="none")
+
+Figure3A <- ggarrange(p1, p2, p3, ncol = 1, nrow = 3,labels =c('A'))
+#pa<-annotate_figure(figure,
+#                top = text_grob("28S_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
+#                left = text_grob("Relative abundance %", color = "black",
+#                                 family = "serif", size = 13, rot=90),
+#               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
+pdf("/Users/dandanizabel-shen/Desktop/NematodaPaper/Figure3A_PCoA_DNAinput.pdf", width=4, height=10)
+Figure3A
+dev.off()
+
+#####################################
+######PcoA Individual nematodes######
+####18S individual nematodes
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/MockIndiv/")
+RelaAbun_Indiv <-read.csv("./RelAbun18S_Indiv.csv",header=T, row.names=1)
+bc.d <-vegdist(t(RelaAbun_Indiv[,1:12]), k=2, method="bray")
+bc.pcoa=cmdscale(bc.d, eig=TRUE)
+bc.pcoa
+
+#percent explained by the first and second axis
+ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
+ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
+# look at the output
+ax1.v.bc *100
+ax2.v.bc *100
+
+# or
+percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
+#'round' function will round our numbers to the one significant digit to the right of the decimal point
+#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
+#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
+#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
+#"trim=True" is trim the white space from the front strings
+pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
+#library("glue") mased from dplyr
+#library("dplyr")
+library("glue")
+labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
+
+Mymeta =data.frame(Type=c("Even_Community","Even_Community","Even_Community","Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
+PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
+PCoA$Type<-factor(PCoA$Type, levels=c("Even_Community","Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
+find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
+hulls <-ddply(PCoA, "Type",find_hull) 
+
+p4 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
+geom_point(aes(shape=Type), size=2.5) + 
+geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
+scale_shape_manual(values=c(1,15,16,17))+
+theme_bw()+ 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
+theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
+labs(title="18S_nematode specimens", x=labs[1], y=labs[2]) + 
+theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
+theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
+theme(legend.text=element_text(size=13,family="serif")) + 
+theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
+theme(legend.background=element_rect(fill=NA)) + 
+theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
+theme(legend.title=element_text(color="black", size=12,family='serif')) + 
+guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
+guides(shape=guide_legend(override.aes=list(size=3.6))) + 
+theme(legend.key.size=unit("0.5","cm")) +
+theme(legend.position="none")
+
+#############################
+#####28S individual nematodes
+#############################
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/MockIndiv")
+RelaAbun_Indiv <-read.csv("./RelAbun28S_Indiv.csv",header=T, row.names=1) #Sample in column, ASV in row
+#### PCoA plot #####
+bc.d <-vegdist(t(RelaAbun_Indiv[,1:12]), k=2, method="bray")
+bc.pcoa=cmdscale(bc.d, eig=TRUE)
+bc.pcoa
+
+#percent explained by the first and second axis
+ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
+ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
+# look at the output
+ax1.v.bc *100
+ax2.v.bc *100
+
+# or
+percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
+#'round' function will round our numbers to the one significant digit to the right of the decimal point
+#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
+#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
+#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
+#"trim=True" is trim the white space from the front strings
+pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
+#library("glue") mased from dplyr
+labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
+  
+Mymeta =data.frame(Type=c("Even_Community","Even_Community","Even_Community","Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
+PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
+PCoA$Type<-factor(PCoA$Type, levels=c("Even_Community","Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
+find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
+hulls <-ddply(PCoA, "Type",find_hull) 
+
+p5 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
+geom_point(aes(shape=Type), size=2.5) + 
+geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
+scale_shape_manual(values=c(1,15,16,17))+
+theme_bw()+ 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
+theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
+labs(title="28S_nematode specimens", x=labs[1], y=labs[2]) + 
+theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
+theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
+theme(legend.text=element_text(size=13,family="serif")) + 
+theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
+theme(legend.background=element_rect(fill=NA)) + 
+theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
+theme(legend.title=element_text(color="black", size=12,family='serif')) + 
+guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
+guides(shape=guide_legend(override.aes=list(size=3.6))) + 
+theme(legend.key.size=unit("0.5","cm")) +
+theme(legend.position="none")
+
+####################################
+######Shotgun individual nematodes###
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockIndiv")
+RelaAbun <-read.csv("./RelAbun_Contigs_Indiv.csv", header=T, row.names=1)
+bc.d <-vegdist(t(RelaAbun[,1:12]), k=2, method="bray")
+bc.pcoa=cmdscale(bc.d, eig=TRUE)
+bc.pcoa
+
+#percent explained by the first and second axis
+ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
+ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
+# look at the output
+ax1.v.bc *100
+ax2.v.bc *100
+
+# or
+percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
+#'round' function will round our numbers to the one significant digit to the right of the decimal point
+#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
+#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
+#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
+#"trim=True" is trim the white space from the front strings
+pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
+#library("glue") mased from dplyr
+#library("dplyr")
+library("glue")
+labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
+  
+Mymeta =data.frame(Type=c("Even_Community","Even_Community","Even_Community","Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
+PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
+PCoA$Type<-factor(PCoA$Type, levels=c("Even_Community","Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
+find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
+hulls <-ddply(PCoA, "Type",find_hull) 
+
+p6 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
+geom_point(aes(shape=Type), size=2.5) + 
+geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
+scale_shape_manual(values=c(1,15,16,17))+
+theme_bw()+ 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
+theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
+labs(title="Shotgun_nematode specimens", x=labs[1], y=labs[2]) + 
+theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
+theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
+theme(legend.text=element_text(size=13,family="serif")) + 
+theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
+theme(legend.background=element_rect(fill=NA)) + 
+theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
+theme(legend.title=element_text(color="black", size=12,family='serif')) + 
+guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
+guides(shape=guide_legend(override.aes=list(size=3.6))) + 
+theme(legend.key.size=unit("0.5","cm")) +
+theme(legend.position="right")
+
+Figure3B <- ggarrange(p4, p5, p6, ncol = 1, nrow = 3,labels =c('B'))
+#pa<-annotate_figure(figure,
+#                top = text_grob("28S_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
+#                left = text_grob("Relative abundance %", color = "black",
+#                                 family = "serif", size = 13, rot=90),
+#               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
+pdf("/Users/dandanizabel-shen/Desktop/Figure3B_PCoA_Individual.pdf", width=4, height=10)
+Figure3B
+dev.off()
+
+
+#legend <-cowplot::get_legend(p6) #change the legend position to right
+#l <-as_ggplot(legend)
+Fig3<- ggarrange(Figure3A, Figure3B, ncol = 2, nrow = 1) #adjust plot space 
+                        #does the plot have a common legend
+#add titles and labels to the multi-panel graph
+#annotate_figure(Fig1, fig.lab = "Figure 1", fig.lab.face = "bold")
+pdf("/Users/dandanizabel-shen/Desktop/Figure3.pdf", width=9, height=11)
+Fig3
+dev.off()
+
+
+###########################################
+#####Relative read data vs. DNA input######
+###########################################
+
+######General ecological group proportion#####
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/Refigures/Figure4")
+Combined <-read.csv("./CombinedALL.csv", header=T)
+
+#remove the text angle=30, hjust=1
+#reorder taxa
+Combined$Grouping <-factor(Combined$Grouping, levels=c("Tolerant", "Less Sensitive", "Sensitive","Others"))
+#reorder treatment ID
+Combined$Type <-factor(Combined$Type, levels=c("Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
+#set individual samples for plotting
+Combined$Sample <-factor(Combined$Sample, levels=c("Tol1","Tol2","Tol3","Tol","Les1","Les2", "Les3","Les", "Sen1", "Sen2" ,"Sen3", "Sen"))
+Combined$Sequence <-factor(Combined$Sequence, levels=c("18S","28S","Shotgun"))
+
+
+#plotting##
+p7<-ggplot(Combined, aes(factor(Sample), Relative, fill=Grouping, order=as.numeric(Grouping))) + 
+geom_bar(stat="identity", width=0.64) + 
+scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total DNA quantity")) +
+scale_fill_manual(values=c("Tolerant"="lightskyblue2", "Less Sensitive"="darkred","Sensitive"="khaki2", "Others"="grey"), name="Response to hypoxia")  + 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif', angle = 25,hjust = 1)) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+theme(legend.key = element_rect(colour = "white")) +
+
+#use 'face_grid' function to separate treatments
+facet_grid(Sequence ~ Type, scales="free") + 
+labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
+theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
+theme(strip.background=element_rect(size=1)) + 
+theme(panel.margin=unit(0.18,"line")) + 
+theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
+theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
+
+pdf("./Figure4A_DNAEcoGroup.pdf", width=7, height=6)
+p7
+dev.off()
+
+#############################################
+#####Taxonomic group at the genus level ######
+##############################################
+##adjusted Combined table##
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/Refigures/Figure3")
+CombinedTaxa <-read.csv("./CombinedTaxaALL.csv", header=T)
+
+#remove the text angle=30, hjust=1
+#reorder taxa
+CombinedTaxa$Nematoda <-factor(CombinedTaxa$Nematoda, levels=c("Sabatieria", "Halomonhystera", "Leptolaimus", "Paracanthonchus", "Microlaimus", "Daptonema","Axonolaimus", "Desmolaimus"))
+#reorder treatment ID
+CombinedTaxa$Type <-factor(CombinedTaxa$Type, levels=c("Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
+#set individual samples for plotting
+CombinedTaxa$Sample <-factor(CombinedTaxa$Sample, levels=c("Tol1","Tol2","Tol3","Tol","Les1","Les2", "Les3", "Les","Sen1", "Sen2","Sen3", "Sen"))
+
+#plotting taxonomic composition#
+p8<-ggplot(CombinedTaxa, aes(factor(Sample), Relative, fill=Nematoda, order=as.numeric(Nematoda))) + 
+geom_bar(stat="identity", width=0.64) + 
+scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total DNA quantity")) +  #dual y axises
+scale_fill_manual(values=c("Sabatieria"="midnightblue","Halomonhystera"="lightskyblue2","Leptolaimus"="steelblue3","Paracanthonchus"="darkgreen", "Microlaimus"="forestgreen", "Daptonema"="darkseagreen2", "Axonolaimus"="darkmagenta","Desmolaimus"= "plum1"), name="Nematoda")  + 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif', angle = 25,hjust = 1)) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif', face='italic')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+theme(legend.key = element_rect(colour = "white")) +
+
+#use 'face_grid' function to separate treatments
+facet_grid(Sequence ~ Type, scales="free") + 
+labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
+theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
+theme(strip.background=element_rect(size=1)) + 
+theme(panel.margin=unit(0.18,"line")) + 
+theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
+theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
+
+##visualize plot##
+pdf("./Figure4B_DNAEcoGroup.pdf", width=7, height=6)
+p8
+dev.off()
+
+##Combine Figure2 A and B
+Fig4 <- ggarrange(p7,p8,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
+Fig4<-annotate_figure(Fig4,top = text_grob("Mock communities with DNA input", color = "black", family = "serif", size = 11, face="bold"))
+pdf("./Figure4Composition_DNAInput.pdf", width=7.3, height=7.5)
+Fig4
+dev.off()
+
+
+#########################################
+#####Individual nematodes######
+#########################################
+
+######General ecological group proportion#####
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/Refigures/Figure5")
+CombinedALL_Indiv <-read.csv("./CombinedALL_Indiv.csv", header=T)
+## have been merged Paracanthoncus with closely related and Microlaimus with closely related
+
+#remove the text angle=30, hjust=1
+#reorder taxa
+CombinedALL_Indiv$Grouping <-factor(CombinedALL_Indiv$Grouping, levels=c("Tolerant", "Less Sensitive", "Sensitive","Others"))
+#reorder treatment ID
+CombinedALL_Indiv$Type <-factor(CombinedALL_Indiv$Type, levels=c("Even_Community","Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
+#set individual samples for plotting
+CombinedALL_Indiv$Sample <-factor(CombinedALL_Indiv$Sample, levels=c("Even1","Even2","Even3","Even","Tol1","Tol2", "Tol3","Tol", "Les1", "Les2","Les3","Les", "Sen1", "Sen2", "Sen3","Sen"))
+
+
+#plotting##
+p9<-ggplot(CombinedALL_Indiv, aes(factor(Sample), Relative, fill=Grouping, order=as.numeric(Grouping))) + 
+geom_bar(stat="identity", width=0.64) + 
+scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total nematodes")) +
+scale_fill_manual(values=c("Tolerant"="lightskyblue2", "Less Sensitive"="darkred","Sensitive"="khaki2", "Others"="grey"), name="Response to hypoxia")  + 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif',angle = 25,hjust = 1)) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+theme(legend.key = element_rect(colour = "white")) +
+
+#use 'face_grid' function to separate treatments
+facet_grid(Sequence ~ Type, scales="free") + 
+labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
+theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
+theme(strip.background=element_rect(size=1)) + 
+theme(panel.margin=unit(0.18,"line")) + 
+theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
+theme(plot.margin=margin(0.03,0,0.05,0.05,"cm")) 
+
+##visualize plot##
+pdf("./Figure5A_IndiEcoGroup.pdf", width=8.2, height=6.2)
+p9
+dev.off()
+
+
+############################################
+######Taxonomic group at the genus level####
+###########################################
+CombinedTaxa <-read.csv("./CombinedTaxaAll_Indiv.csv", header=T)
+## have been merged Paracanthoncus with closely related and Microlaimus with closely related
+
+#remove the text angle=30, hjust=1
+#reorder taxa
+CombinedTaxa$Nematoda <-factor(CombinedTaxa$Nematoda, levels=c("Sabatieria", "Halomonhystera", "Leptolaimus", "Paracanthonchus", "Microlaimus", "Daptonema", "Axonolaimus", "Desmolaimus"))
+#reorder treatment ID
+CombinedTaxa$Type <-factor(CombinedTaxa$Type, levels=c("Even_Community","Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
+#set individual samples for plotting
+CombinedTaxa$Sample <-factor(CombinedTaxa$Sample, levels=c("Even1","Even2","Even3","Even","Tol1","Tol2", "Tol3","Tol", "Les1", "Les2","Les3","Les", "Sen1", "Sen2", "Sen3","Sen"))
+
+#plotting##
+p10<-ggplot(CombinedTaxa, aes(factor(Sample), Relative, fill=Nematoda, order=as.numeric(Nematoda))) + 
+geom_bar(stat="identity", width=0.64) + 
+scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total nematodes")) +
+scale_fill_manual(values=c("Sabatieria"="midnightblue","Halomonhystera"="lightskyblue2","Leptolaimus"="steelblue3","Paracanthonchus"="darkgreen", "Microlaimus"="mediumseagreen", "Daptonema"="darkseagreen2", "Axonolaimus"="darkmagenta","Desmolaimus"= "plum1"), name="Nematoda")  + 
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif',angle = 25,hjust = 1)) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif', face='italic')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+theme(legend.key = element_rect(colour = "white")) +
+
+#use 'face_grid' function to separate treatments
+facet_grid(Sequence ~ Type, scales="free") + 
+labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
+theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
+theme(strip.background=element_rect(size=1)) + 
+theme(panel.margin=unit(0.18,"line")) + 
+theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
+theme(plot.margin=margin(0.03,0,0.05,0.05,"cm")) 
+ ##visualize plot##
+pdf("./Figure5B_IndiEcoGroup.pdf", width=8.2, height=6.2)
+p10
+dev.off()
+
+Fig5<- ggarrange(p9,p10,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
+Fig5<-annotate_figure(Fig5,top = text_grob("Mock communities with nematode specimens", color = "black", family = "serif", size = 11, face="bold"))
+
+pdf("./Figure5Composition_Indiv.pdf", width=8.5, height=7.5)
+Fig5
+dev.off()
+
+
+######################################################
+###########Calculate pearson correlation##############
+######################################################
+
+###18S DNA input
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/DNA_input")
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+Sabal_18S <- cor.test(Sabalinear$Relative, Sabalinear$DNAcon)
+Sabal_18S
+
+Halolinear <-read.csv("./Halolinear.csv", header=T, row.names=1)
+Halo_18S <- cor.test(Halolinear$Relative, Halolinear$DNAcon)
+Halo_18S
+
+
+Leptlinear <-read.csv("./Leptlinear.csv", header=T, row.names=1)
+Lept_18S <- cor.test(Leptlinear$Relative, Leptlinear$DNAcon)
+Lept_18S
+
+
+Paralinear <-read.csv("./Paralinear.csv", header=T, row.names=1)
+Para_18S <- cor.test(Paralinear$Relative, Paralinear$DNAcon)
+Para_18S
+
+
+Microlinear <-read.csv("./Microlinear.csv", header=T, row.names=1)
+Micro_18S <- cor.test(Microlinear$Relative, Microlinear$DNAcon)
+Micro_18S
+
+Daptolinear <-read.csv("./Daptolinear.csv", header=T, row.names=1)
+Dapto_18S <- cor.test(Daptolinear$Relative, Daptolinear$DNAcon)
+Dapto_18S
+
+Axolinear <-read.csv("./Axolinear.csv", header=T, row.names=1)
+Axo_18S <- cor.test(Axolinear$Relative, Axolinear$DNAcon)
+Axo_18S
+
+Desmlinear <-read.csv("./Desmlinear.csv", header=T, row.names=1)
+Desm_18S <- cor.test(Desmlinear$Relative, Desmlinear$DNAcon)
+Desm_18S
+
+
+###28S DNA input
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/DNAinput")
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+Sabal_28S <- cor.test(Sabalinear$Relative, Sabalinear$DNAcon)
+Sabal_28S
+
+Halolinear <-read.csv("./Halolinear.csv", header=T, row.names=1)
+Halo_28S <- cor.test(Halolinear$Relative, Halolinear$DNAcon)
+Halo_28S
+
+
+Leptlinear <-read.csv("./Leptlinear.csv", header=T, row.names=1)
+Lept_28S <- cor.test(Leptlinear$Relative, Leptlinear$DNAcon)
+Lept_28S
+
+
+Paralinear <-read.csv("./Paralinear.csv", header=T, row.names=1)
+Para_28S <- cor.test(Paralinear$Relative, Paralinear$DNAcon)
+Para_28S
+
+
+Microlinear <-read.csv("./Microlinear.csv", header=T, row.names=1)
+Micro_28S <- cor.test(Microlinear$Relative, Microlinear$DNAcon)
+Micro_28S
+
+Daptolinear <-read.csv("./Daptolinear.csv", header=T, row.names=1)
+Dapto_28S <- cor.test(Daptolinear$Relative, Daptolinear$DNAcon)
+Dapto_28S
+
+Axolinear <-read.csv("./Axolinear.csv", header=T, row.names=1)
+Axo_28S <- cor.test(Axolinear$Relative, Axolinear$DNAcon)
+Axo_28S
+
+Desmlinear <-read.csv("./Desmlinear.csv", header=T, row.names=1)
+Desm_28S <- cor.test(Desmlinear$Relative, Desmlinear$DNAcon)
+Desm_28S
+
+
+###Shotgun DNA input
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockDNA")
+Sabalinear <-read.csv("./Shotgun_Sabalinear.csv", header=T, row.names=1)
+Sabal_Shotgun <- cor.test(Sabalinear$Relative, Sabalinear$DNAcon)
+Sabal_Shotgun
+
+Halolinear <-read.csv("./Shotgun_Halolinear.csv", header=T, row.names=1)
+Halo_Shotgun <- cor.test(Halolinear$Relative, Halolinear$DNAcon)
+Halo_Shotgun
+
+
+Leptlinear <-read.csv("./Shotgun_Leptlinear.csv", header=T, row.names=1)
+Lept_Shotgun <- cor.test(Leptlinear$Relative, Leptlinear$DNAcon)
+Lept_Shotgun
+
+
+Paralinear <-read.csv("./Shotgun_Paralinear.csv", header=T, row.names=1)
+Para_Shotgun <- cor.test(Paralinear$Relative, Paralinear$DNAcon)
+Para_Shotgun
+
+
+Microlinear <-read.csv("./Shotgun_Microlinear.csv", header=T, row.names=1)
+Micro_Shotgun <- cor.test(Microlinear$Relative, Microlinear$DNAcon)
+Micro_Shotgun
+
+Daptolinear <-read.csv("./Shotgun_Daptolinear.csv", header=T, row.names=1)
+Dapto_Shotgun <- cor.test(Daptolinear$Relative, Daptolinear$DNAcon)
+Dapto_Shotgun
+
+Axolinear <-read.csv("./Shotgun_Axolinear.csv", header=T, row.names=1)
+Axo_Shotgun <- cor.test(Axolinear$Relative, Axolinear$DNAcon)
+Axo_Shotgun
+
+Desmlinear <-read.csv("./Shotgun_Desmlinear.csv", header=T, row.names=1)
+Desm_Shotgun <- cor.test(Desmlinear$Relative, Desmlinear$DNAcon)
+Desm_Shotgun
+
+
+
+#### 18S individual nematodes #######
+setwd("/Users/dandanizabel-shen/Desktop/NematodaPaper/NEWMockManuscript/18SMockResults/MockIndiv")
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+Sabal_18S <- cor.test(Sabalinear$Indiv, Sabalinear$Relative)
+Sabal_18S
+
+Halolinear <-read.csv("./Halolinear.csv", header=T, row.names=1)
+Halo_18S <- cor.test(Halolinear$Indiv, Halolinear$Relative)
+Halo_18S
+
+
+Leptlinear <-read.csv("./Leptlinear.csv", header=T, row.names=1)
+Lept_18S <- cor.test(Leptlinear$Indiv, Leptlinear$Relative, )
+Lept_18S
+
+
+Paralinear <-read.csv("./Paralinear.csv", header=T, row.names=1)
+Para_18S <- cor.test(Paralinear$Indiv,Paralinear$Relative)
+Para_18S
+
+
+Microlinear <-read.csv("./Microlinear.csv", header=T, row.names=1)
+Micro_18S <- cor.test(Microlinear$Indiv,Microlinear$Relative)
+Micro_18S
+
+Daptolinear <-read.csv("./Daptolinear.csv", header=T, row.names=1)
+Dapto_18S <- cor.test(Daptolinear$Indiv,Daptolinear$Relative)
+Dapto_18S
+
+Axolinear <-read.csv("./Axolinear.csv", header=T, row.names=1)
+Axo_18S <- cor.test(Axolinear$Indiv,Axolinear$Relative)
+Axo_18S
+
+Desmlinear <-read.csv("./Desmlinear.csv", header=T, row.names=1)
+Desm_18S <- cor.test(Desmlinear$Indiv,Desmlinear$Relative)
+Desm_18S
+
+###28S individual nematodes#####
+setwd("/Users/dandanizabel-shen/Desktop/NematodaPaper/NEWMockManuscript/28SMockResults/MockIndiv")
+Sabalinear <-read.csv("./Sabalinear_28S.csv", header=T, row.names=1)
+Sabal_28S <- cor.test(Sabalinear$Indiv, Sabalinear$Relative)
+Sabal_28S
+
+Halolinear <-read.csv("./Halolinear_28S.csv", header=T, row.names=1)
+Halo_28S <- cor.test(Halolinear$Indiv, Halolinear$Relative)
+Halo_28S
+
+
+Leptlinear <-read.csv("./Leptlinear_28S.csv", header=T, row.names=1)
+Lept_28S <- cor.test(Leptlinear$Indiv, Leptlinear$Relative, )
+Lept_28S
+
+
+Paralinear <-read.csv("./Paralinear_28S.csv", header=T, row.names=1)
+Para_28S <- cor.test(Paralinear$Indiv,Paralinear$Relative)
+Para_28S
+
+
+Microlinear <-read.csv("./Microlinear_28S.csv", header=T, row.names=1)
+Micro_28S <- cor.test(Microlinear$Indiv,Microlinear$Relative)
+Micro_28S
+
+Daptolinear <-read.csv("./Daptolinear_28S.csv", header=T, row.names=1)
+Dapto_28S <- cor.test(Daptolinear$Indiv,Daptolinear$Relative)
+Dapto_28S
+
+Axolinear <-read.csv("./Axolinear_28S.csv", header=T, row.names=1)
+Axo_28S <- cor.test(Axolinear$Indiv,Axolinear$Relative)
+Axo_28S
+
+Desmlinear <-read.csv("./Desmlinear_28S.csv", header=T, row.names=1)
+Desm_28S <- cor.test(Desmlinear$Indiv,Desmlinear$Relative)
+Desm_28S
+
+
+####Shotgun individual nematodes######
+setwd("/Users/dandanizabel-shen/Desktop/NematodaPaper/NEWMockManuscript/ShotgunMockResults/ShotgunMockIndiv")
+Sabalinear <-read.csv("./ShotgunIndiv_Sabalinear.csv", header=T, row.names=1)
+Sabal_Shotgun <- cor.test(Sabalinear$Relative, Sabalinear$Indiv)
+Sabal_Shotgun
+
+Halolinear <-read.csv("./ShotgunIndiv_Halolinear.csv", header=T, row.names=1)
+Halo_Shotgun <- cor.test(Halolinear$Relative, Halolinear$Indiv)
+Halo_Shotgun
+
+
+Leptlinear <-read.csv("./ShotgunIndiv_Leptlinear.csv", header=T, row.names=1)
+Lept_Shotgun <- cor.test(Leptlinear$Relative, Leptlinear$Indiv)
+Lept_Shotgun
+
+
+Paralinear <-read.csv("./ShotgunIndiv_Paralinear.csv", header=T, row.names=1)
+Para_Shotgun <- cor.test(Paralinear$Relative, Paralinear$Indiv)
+Para_Shotgun
+
+
+Microlinear <-read.csv("./ShotgunIndiv_Microlinear.csv", header=T, row.names=1)
+Micro_Shotgun <- cor.test(Microlinear$Relative, Microlinear$Indiv)
+Micro_Shotgun
+
+Daptolinear <-read.csv("./ShotgunIndiv_Daptolinear.csv", header=T, row.names=1)
+Dapto_Shotgun <- cor.test(Daptolinear$Relative, Daptolinear$Indiv)
+Dapto_Shotgun
+
+Axolinear <-read.csv("./ShotgunIndiv_Axolinear.csv", header=T, row.names=1)
+Axo_Shotgun <- cor.test(Axolinear$Relative, Axolinear$Indiv)
+Axo_Shotgun
+
+Desmlinear <-read.csv("./ShotgunIndiv_Desmlinear.csv", header=T, row.names=1)
+Desm_Shotgun <- cor.test(Desmlinear$Relative, Desmlinear$Indiv)
+Desm_Shotgun
+
+
+####Making coefficient figure###
+### load R library for this session
+library("base")
+library("graphics")
+library("ggplot2")
+library("gridExtra")
+
+#########################################
+setwd("/Users/dandanizabel-shen/Desktop/NematodaPaper")
+coe <-read.csv("./Coefficient.csv", header=T) 
+############## including Variable that is taxonomic ranks, coefficient value, lifestyles, Depth, and Standard Errors (SE) of the uppler and lower of the 95% confidence interval #################### the values of upper and lower of the 95% confidence interval were calculated in the Spearman's rank analysis for each taxonomic rank ######## 
+
+################ substracting Mock comprised of DNA input mock data ################
+coe1 <-coe[1:24,]       
+
+################ substracting Mock comprised of individual nematodes relevant data ################
+coe2 <-coe[25:48,]       
+
+interval1 <-qnorm((1-0.9)/2)  # inner coefficient intervals 
+interval2 <-qnorm((1-0.95)/2) # outer coefficient intervals
+
+################## setting the factors to order the sequence of taxonomic ranks ###########################
+coe1$Nematoda <-factor(coe1$Nematoda, levels=c("Desmolaimus","Axonolaimus","Daptonema","Microlaimus","Paracanthonchus", "Leptolaimus", "Halomonhystera", "Sabatieria"))
+coe2$Nematoda <-factor(coe1$Nematoda, levels=c("Desmolaimus","Axonolaimus","Daptonema","Microlaimus","Paracanthonchus", "Leptolaimus", "Halomonhystera", "Sabatieria"))
+coe1$Sequences <-factor(coe1$Sequences, levels=c("Shotgun","28S","18S"))
+coe2$Sequences <-factor(coe2$Sequences, levels=c("Shotgun","28S","18S"))
+
+
+## Figure 6 Mock with DNA input
+############################################ plot the surface samples #######################################
+p11 <-ggplot(coe1, aes(Nematoda, Coefficient,colour=Sequences,order=as.numeric(Nematoda))) + 
+geom_hline(yintercept=0, colour=gray (1/2), lty=2)  + 
+scale_color_manual(values=c("18S"="firebrick2","28S"="gold1","Shotgun"="deepskyblue2"))+ 
+geom_linerange(aes(x=Nematoda, ymin=Coefficient - SE*interval1, ymax=Coefficient+SE*interval1), lwd=1, position= position_dodge(width=1/2)) +
+geom_pointrange(aes(x=Nematoda, ymin=Coefficient-SE*interval2, ymax=Coefficient+SE*interval2), lwd=1/2, position= position_dodge(width=1/2), shape=21, fill="WHITE") +  
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif',face='italic')) + 
+theme(axis.title.x=element_blank()) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_blank()) + 
+theme(plot.title=element_text(size=11, colour='black', family='serif', face="bold")) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif')) + 
+labs(title="Mock communities with DNA input") +
+theme(legend.key.size=unit("0.34","cm")) + 
+guides(color = guide_legend(reverse=TRUE)) +
+theme(legend.position="none") +
+theme(legend.key = element_rect(colour = "white")) +
+coord_flip() 
+
+
+## Figure 6 Mock with individual nematodes
+############################ plot the cold intermediate layer samles ####################################################
+p12 <-ggplot(coe2, aes(Nematoda, Coefficient,colour=Sequences,order=as.numeric(Nematoda))) + 
+geom_hline(yintercept=0, colour=gray (1/2), lty=2)  + 
+scale_color_manual(values=c("18S"="firebrick2","28S"="gold1","Shotgun"="deepskyblue2"))+ 
+geom_linerange(aes(x=Nematoda, ymin=Coefficient - SE*interval1, ymax=Coefficient+SE*interval1), lwd=1, position= position_dodge(width=1/2)) +
+geom_pointrange(aes(x=Nematoda, ymin=Coefficient-SE*interval2, ymax=Coefficient+SE*interval2), lwd=1/2, position= position_dodge(width=1/2), shape=21, fill="WHITE") +  
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif',face='italic')) + 
+theme(axis.title.x=element_blank()) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_blank()) + 
+theme(plot.title=element_text(size=11, colour='black', family='serif', face="bold")) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+labs(title="Mock communities with nematode specimens") +
+guides(color = guide_legend(reverse=TRUE)) + ## reverse the legend colors
+theme(legend.position="none") +
+theme(legend.key = element_rect(colour = "white")) +
+coord_flip()
+
+pdf("./Figure6_coefficentPlot.pdf", width=5.8, height=6.2)
+Fig6 <- ggarrange(p11,p12,ncol = 1,labels =c('A','B'), common.legend=TRUE, legend="right", font.label=list(color="black", size=13, face="bold",face="serif"))
+Fig6 <-annotate_figure(Fig6,bottom = text_grob("Coefficient", color="black",face="bold",size=11), left=text_grob("Nematoda",color="black",face="bold",family = "serif", size=11, rot=90)) #family = "serif", size = 10.5, face="bold")
+Fig6
+dev.off()
+
+
+####################################
+##Mantel and PROTEST test############
+######################################
+####for correlation between beta-diversity#########
+
+##########DNA input####
+####18S####
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/DNA_input")
+RelaAbun_18S_Exp1 <-read.csv("./RelAbun18S.csv",header=T, row.names=1) #Sample in row, ASV in colum
+bc.d_18S_Exp1 <-vegdist(t(RelaAbun_18S_Exp1[,1:9]), k=2, method="bray")
+
+####28S#####
+setwd("/Users/Dandan/Desktop//NEWMockManuscript/28SMockResults/DNAinput")
+RelaAbun_28S_Exp1 <-read.csv("/Users/Dandan/Desktop//NEWMockManuscript/28SMockResults/DNAinput/RelAbun28S_DNA.csv", header=T, row.names=1) #Sample in row, ASV in colum
+bc.d_28S_Exp1 <-vegdist(t(RelaAbun_28S_Exp1), k=2, method="bray")
+
+####Shotgun###
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockDNA")
+RelaAbun_Shotgun_Exp1 <-read.csv("./RelaContigs_DNA.csv",header=T, row.names=1) #Sample in row, ASV in colum
+bc.d_Shotgun_Exp1 <-vegdist(t(RelaAbun_Shotgun_Exp1[,1:9]), k=2, method="bray")
+
+
+#Mantel test  Test1 18S vs. 28S Exp1
+Test1<-mantel(bc.d_18S_Exp1, bc.d_28S_Exp1, method="pearson", permutations=999, strata = NULL, na.rm = FALSE, parallel = getOption("mc.cores"))
+
+# Test2 18S vs. shotgun Exp1
+Test2<-mantel(bc.d_18S_Exp1, bc.d_Shotgun_Exp1, method="pearson", permutations=999, strata = NULL, na.rm = FALSE, parallel = getOption("mc.cores"))
+
+# Test3 28S vs. shotgun Exp1
+Test3<-mantel(bc.d_28S_Exp1, bc.d_Shotgun_Exp1, method="pearson", permutations=999, strata = NULL, na.rm = FALSE, parallel = getOption("mc.cores"))
+
+
+####Nematode specimens####
+##18S Epx2
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/MockIndiv/")
+RelaAbun_Indiv_18S_Exp2 <-read.csv("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/MockIndiv/RelAbun18S_Indiv.csv",header=T, row.names=1)
+bc.d_18S_Exp2 <-vegdist(t(RelaAbun_Indiv_18S_Exp2[,1:12]), k=2, method="bray")
+
+##28S Exp2
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/MockIndiv")
+RelaAbun_Indiv_28S_Exp2 <-read.csv("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/MockIndiv/RelAbun28S_Indiv.csv",header=T, row.names=1) #Sample in column, ASV in row
+#### PCoA plot #####
+bc.d_28S_Exp2 <-vegdist(t(RelaAbun_Indiv_28S_Exp2[,1:12]), k=2, method="bray")
+
+##Shotgun Exp2
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockIndiv")
+RelaAbun_Shotgun_Exp2 <-read.csv("./RelAbun_Contigs_Indiv.csv", header=T, row.names=1)
+bc.d_Shotgun_Exp2 <-vegdist(t(RelaAbun_Shotgun_Exp2[,1:12]), k=2, method="bray")
+
+
+#Mantel test  Test1 18S vs. 28S Exp2
+Test4<-mantel(bc.d_18S_Exp2, bc.d_28S_Exp2, method="pearson", permutations=999, strata = NULL, na.rm = FALSE, parallel = getOption("mc.cores"))
+Test4
+
+# Test2 18S vs. shotgun Exp2
+Test5<-mantel(bc.d_18S_Exp2, bc.d_Shotgun_Exp2, method="pearson", permutations=999, strata = NULL, na.rm = FALSE, parallel = getOption("mc.cores"))
+Test5
+
+# Test3 28S vs. shotgun Exp2
+Test6<-mantel(bc.d_28S_Exp2, bc.d_Shotgun_Exp2, method="pearson", permutations=999, strata = NULL, na.rm = FALSE, parallel = getOption("mc.cores"))
+Test6
+
+
+###########################################################################
+#########Person correlation figures for supplementary information#########
+##########################################################################
+
+##18S DNA input
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/DNA_Input/")
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+p3<-ggscatter(Sabalinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Sabatieria") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Halolinear <-read.csv("./Halolinear.csv", header=T, row.names=1)
+p4<-ggscatter(Halolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Halomonhystera") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Leptlinear <-read.csv("./Leptlinear.csv", header=T, row.names=1)
+p5<-ggscatter(Leptlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Leptolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+
+
+Paralinear <-read.csv("./Paralinear.csv", header=T, row.names=1)
+p6<-ggscatter(Paralinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Paracanthonchus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Microlinear <-read.csv("./Microlinear.csv", header=T, row.names=1)
+p7<-ggscatter(Microlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Microlaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Daptolinear <-read.csv("./Daptolinear.csv", header=T, row.names=1)
+p8<-ggscatter(Daptolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Daptonema") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Axolinear <-read.csv("./Axolinear.csv", header=T, row.names=1)
+p9<-ggscatter(Axolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Axonolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Desmlinear <-read.csv("./Desmlinear.csv", header=T, row.names=1)
+p10<-ggscatter(Desmlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Desmolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=14, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+figure <- ggarrange(p3, p4, p5, p6, p7, p8, p9, p10,
+                    ncol = 4, nrow = 2)
+pa<-annotate_figure(figure,
+                top = text_grob("18S_DNA input", color = "black", family = "serif", size = 14, face="bold"),
+                left = text_grob("Relative abundance %", color = "black",
+                                 family = "serif", size = 13, rot=90),
+               bottom =text_grob("DNA (ng)", color="black", size=13, family="serif"))
+pdf("./FigureNEW1.pdf", width=13.8, height=6)
+pa
+dev.off()
+
+###18S individual nematodes###
+setwd("/Users/dandanizabel-shen/Desktop/NematodaPaper/NEWMockManuscript/18SMockResults/MockIndiv")
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+p20<-ggscatter(Sabalinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Sabatieria") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Halolinear <-read.csv("./Halolinear.csv", header=T, row.names=1)
+p21<-ggscatter(Halolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Halomonhystera") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+
+Leptlinear <-read.csv("./Leptlinear.csv", header=T, row.names=1)
+p22<-ggscatter(Leptlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Leptolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Paralinear <-read.csv("./Paralinear.csv", header=T, row.names=1)
+p23<-ggscatter(Paralinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Paracanthonchus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Microlinear <-read.csv("./Microlinear.csv", header=T, row.names=1)
+p24<-ggscatter(Microlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Microlaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Daptolinear <-read.csv("./Daptolinear.csv", header=T, row.names=1)
+p25<-ggscatter(Daptolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Daptonema") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Axolinear <-read.csv("./Axolinear.csv", header=T, row.names=1)
+p26<-ggscatter(Axolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Axonolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Desmlinear <-read.csv("./Desmlinear.csv", header=T, row.names=1)
+p27<-ggscatter(Desmlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab =(""), xlab =(""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Desmolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=14, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+figure <- ggarrange(p20, p21, p22, p23, p24, p25, p26, p27,
+                    ncol = 4, nrow = 2)
+pa<-annotate_figure(figure,
+                top = text_grob("18S_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
+                left = text_grob("Relative abundance %", color = "black",
+                                 family = "serif", size = 13, rot=90),
+               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
+pdf("./Figure19.pdf", width=13.8, height=6)
+pa
+dev.off()
+
+
+####28S DNA input#####
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/DNAinput")
+Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
+p3<-ggscatter(Sabalinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Sabatieria") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Halolinear <-read.csv("./Halolinear.csv", header=T, row.names=1)
+p4<-ggscatter(Halolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Halomonhystera") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Leptlinear <-read.csv("./Leptlinear.csv", header=T, row.names=1)
+p5<-ggscatter(Leptlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Leptolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Paralinear <-read.csv("./Paralinear.csv", header=T, row.names=1)
+p6<-ggscatter(Paralinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Paracanthonchus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Microlinear <-read.csv("./Microlinear.csv", header=T, row.names=1)
+p7<-ggscatter(Microlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Microlaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Daptolinear <-read.csv("./Daptolinear.csv", header=T, row.names=1)
+p8<-ggscatter(Daptolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Daptonema") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Axolinear <-read.csv("./Axolinear.csv", header=T, row.names=1)
+p9<-ggscatter(Axolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Axonolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Desmlinear <-read.csv("./Desmlinear.csv", header=T, row.names=1)
+p10<-ggscatter(Desmlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Desmolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=14, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+figure <- ggarrange(p3, p4, p5, p6, p7, p8, p9, p10,
+                    ncol = 4, nrow = 2)
+pa<-annotate_figure(figure,
+                top = text_grob("28S_DNA input", color = "black", family = "serif", size = 14, face="bold"),
+                left = text_grob("Relative abundance %", color = "black",
+                                 family = "serif", size = 13, rot=90),
+               bottom =text_grob("DNA (ng)", color="black", size=13, family="serif"))
+pdf("./Figure3_28S.pdf", width=13.8, height=6)
+pa
+dev.off()
+
+
+#####28S individual nematodes####
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/MockIndiv")
+Sabalinear <-read.csv("./Sabalinear_28S.csv", header=T, row.names=1)
+p20<-ggscatter(Sabalinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Sabatieria") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Halolinear <-read.csv("./Halolinear_28S.csv", header=T, row.names=1)
+p21<-ggscatter(Halolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Halomonhystera") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Leptlinear <-read.csv("./Leptlinear_28S.csv", header=T, row.names=1)
+p22<-ggscatter(Leptlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Leptolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Paralinear <-read.csv("./Paralinear_28S.csv", header=T, row.names=1)
+p23<-ggscatter(Paralinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Paracanthonchus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Microlinear <-read.csv("./Microlinear_28S.csv", header=T, row.names=1)
+p24<-ggscatter(Microlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Microlaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Daptolinear <-read.csv("./Daptolinear_28S.csv", header=T, row.names=1)
+p25<-ggscatter(Daptolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Daptonema") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Axolinear <-read.csv("./Axolinear_28S.csv", header=T, row.names=1)
+p26<-ggscatter(Axolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Axonolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Desmlinear <-read.csv("./Desmlinear_28S.csv", header=T, row.names=1)
+p27<-ggscatter(Desmlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab =(""), xlab =(""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Desmolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=14, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+figure <- ggarrange(p20, p21, p22, p23, p24, p25, p26, p27,
+                    ncol = 4, nrow = 2)
+pa<-annotate_figure(figure,
+                top = text_grob("28S_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
+                left = text_grob("Relative abundance %", color = "black",
+                                 family = "serif", size = 13, rot=90),
+               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
+pdf("./Figure19_28SIndvi.pdf", width=13.8, height=6)
+pa
+dev.off()
+
+
+####Shotgun DNA input###
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockDNA")
+Sabalinear <-read.csv("./Shotgun_Sabalinear.csv", header=T, row.names=1)
+p36<-ggscatter(Sabalinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Sabatieria") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+
+Halolinear <-read.csv("./Shotgun_Halolinear.csv", header=T, row.names=1)
+p37<-ggscatter(Halolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Halomonhystera") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Leptlinear <-read.csv("./Shotgun_Leptlinear.csv", header=T, row.names=1)
+p38<-ggscatter(Leptlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Leptolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Paralinear <-read.csv("./Shotgun_Paralinear.csv", header=T, row.names=1)
+p39<-ggscatter(Paralinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Paracanthonchus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Microlinear <-read.csv("./Shotgun_Microlinear.csv", header=T, row.names=1)
+p40<-ggscatter(Microlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Microlaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Daptolinear <-read.csv("./Shotgun_Daptolinear.csv", header=T, row.names=1)
+p41<-ggscatter(Daptolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Daptonema") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Axolinear <-read.csv("./Shotgun_Axolinear.csv", header=T, row.names=1)
+p42<-ggscatter(Axolinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Axonolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Desmlinear <-read.csv("./Shotgun_Desmlinear.csv", header=T, row.names=1)
+p43<-ggscatter(Desmlinear, x = "DNAcon", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Desmolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=14, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+figure <- ggarrange(p36, p37, p38, p39, p40, p41, p42, p43,
+                    ncol = 4, nrow = 2)
+pa<-annotate_figure(figure,
+                top = text_grob("Shotgun_DNA input", color = "black", family = "serif", size = 14, face="bold"),
+                left = text_grob("Relative abundance %", color = "black",
+                                 family = "serif", size = 13, rot=90),
+               bottom =text_grob("DNA (ng)", color="black", size=13, family="serif"))
+pdf("./Shotgun_correlation_DNAinput.pdf", width=13.8, height=6)
+
+
+####Shotgun indvidual nematode###
+setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockIndiv")
+Sabalinear <-read.csv("./ShotgunIndiv_Sabalinear.csv", header=T, row.names=1)
+p44<-ggscatter(Sabalinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Sabatieria") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Halolinear <-read.csv("./ShotgunIndiv_Halolinear.csv", header=T, row.names=1)
+p45<-ggscatter(Halolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Halomonhystera") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Leptlinear <-read.csv("./ShotgunIndiv_Leptlinear.csv", header=T, row.names=1)
+p46<-ggscatter(Leptlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Leptolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Paralinear <-read.csv("./ShotgunIndiv_Paralinear.csv", header=T, row.names=1)
+p47<-ggscatter(Paralinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Paracanthonchus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Microlinear <-read.csv("./ShotgunIndiv_Microlinear.csv", header=T, row.names=1)
+p48<-ggscatter(Microlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Microlaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Daptolinear <-read.csv("./ShotgunIndiv_Daptolinear.csv", header=T, row.names=1)
+p49<-ggscatter(Daptolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Daptonema") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif", face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+
+Axolinear <-read.csv("./ShotgunIndiv_Axolinear.csv", header=T, row.names=1)
+p50<-ggscatter(Axolinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab = (""), xlab = (""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Axonolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=12.8, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+Desmlinear <-read.csv("./ShotgunIndiv_Desmlinear.csv", header=T, row.names=1)
+p51<-ggscatter(Desmlinear, x = "Indiv", y = "Relative",  shape=1,
+            add = "reg.line", add.params=list(color="blue", fill="lightgray"), conf.int = TRUE, 
+            cor.coef = TRUE, cor.method = "pearson", size=3,
+            ylab =(""), xlab =(""), cor.coef.size = 4, font.family="serif") + 
+            labs(title="Desmolaimus") + 
+            theme(axis.title.y=element_text(colour = 'black',size =12.8, family="serif")) + 
+            theme(axis.title.x=element_text(colour = 'black', size = 12.8,family="serif" )) + 
+            theme(axis.text.y=element_text(colour = 'black', size = 12.8, family="serif")) + 
+            theme(plot.title=element_text(colour= 'black', size=14, family="serif",face='bold.italic')) + 
+            theme(axis.text.x=element_text(colour = 'black', size = 12.8, family="serif"))
+
+figure <- ggarrange(p44, p45, p46, p47, p48, p49, p50, p51,
+                    ncol = 4, nrow = 2)
+pa<-annotate_figure(figure,
+                top = text_grob("Shotgun_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
+                left = text_grob("Relative abundance %", color = "black",
+                                 family = "serif", size = 13, rot=90),
+               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
+pdf("./Shotgun_Correlation_Indvi.pdf", width=13.8, height=6)
+pa
+dev.off()
+
+
+###########################
+#### False positive####
+#######################
+######Plot Non Nematoda fraction#######
+
+FalsePositive <-read.csv("./FalsePositive.csv", header=T)
+## have been merged Paracanthoncus with closely related and Microlaimus with closely related
+
+#remove the text angle=30, hjust=1
+FalsePositive$Sequence <-factor(FalsePositive$Sequence, levels=c("18S", "Shotgun"))
+#reorder treatment ID
+FalsePositive$Mock <-factor(FalsePositive$Mock, levels=c("DNA input","Nematode specimens"))
+
+#plotting##
+p52<-ggplot(FalsePositive, aes(factor(Mock), y=Relative, color=Sequence)) + 
+geom_boxplot() + 
+scale_color_manual(values=c("18S"="firebrick2","Shotgun"="deepskyblue2"), name="Sequences") + 
+geom_point(position=)
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+theme(legend.key = element_rect(colour = "white")) +
+labs(title="Sequences not assigned to Nematoda of interest", y="Relative abundance %", x="Mock community") +
+
+set.seed(123) #for reproducibility
+stat.test <-DNAinput %>%
+  group_by(Sequence) %>%
+  t_test(18S ~Shotgun) %>%
+  adjust_pvalue() %>%
+  mutate(y.position = 35)
+stat.test
+
+
+p52<-ggplot(FalsePositive, aes(x=Sequence, y=Relative, color=Sequence)) + 
+geom_boxplot() + 
+scale_color_manual(values=c("18S"="firebrick2","Shotgun"="deepskyblue2"), name="Sequences") + 
+geom_point(position=(position=position_jitterdodge())) +
+theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
+theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
+theme(panel.background =element_rect(fil="white", color="black")) + 
+theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
+theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(axis.ticks.x = element_blank()) + 
+theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
+theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
+theme(legend.title=element_text(size=10, family='serif')) +  
+theme(legend.text=element_text(size=10, family='serif')) + 
+theme(legend.key.size=unit("0.34","cm")) + 
+theme(legend.key = element_rect(colour = "white")) +
+labs(title="Sequences not assigned to Nematoda of interest", y="Relative abundance %", x="Sequences") +
+facet_grid(.~Mock, scales="free") +
+geom_signif(comparisons = list(c("18S", "Shotgun")), map_signif_level=TRUE, col = "black", size = 0.4) +
+theme(strip.text=element_text(size=10,face='bold', family='serif')) + 
+theme(strip.background=element_rect(size=1)) + 
+theme(panel.margin=unit(0.18,"line")) + 
+theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
+theme(plot.margin=margin(0.03,0,0.05,0.05,"cm")) 
+pdf("./FalsePositive.pdf", width=4.4, height=4.8)
+p52
+dev.off()
+
+######Perform Welch's ttest
+set.seed(123) #for reproducibility
+DNAinput <-subset(FalsePositive, Mock == "DNA input")
+DNAinput18S <-subset (DNAinput, Sequence == "18S")
+DNAinputShotgun <-subset(DNAinput, Sequence == "Shotgun")
+
+###Run T test
+DNAinputTest <-t.test(DNAinput18S$Relative, DNAinputShotgun$Relative)
+DNAinputTest
+
+NematodeSpecimens <-subset(FalsePositive, Mock == "Nematode specimens")
+NematodeSpe18S <-subset (NematodeSpecimens, Sequence == "18S")
+NematodeSpeShotgun <-subset(NematodeSpecimens, Sequence == "Shotgun")
+
+###Run T test
+NematodeSpeTest <-t.test(NematodeSpe18S$Relative, NematodeSpeShotgun$Relative)
+NematodeSpeTest
+
+
+
+
+
 
