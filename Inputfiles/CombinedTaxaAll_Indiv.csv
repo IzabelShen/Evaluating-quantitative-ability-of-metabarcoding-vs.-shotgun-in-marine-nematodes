@@ -1,0 +1,385 @@
+Nematoda,Relative,Sample1,Type,Indiv,Sequence,Sample
+Sabatieria,5.165519316,Comm_A1,Even_Community,10,18S,Even1
+Halomonhystera,34.31610293,Comm_A1,Even_Community,10,18S,Even1
+Leptolaimus,2.082974384,Comm_A1,Even_Community,10,18S,Even1
+Paracanthonchus,0.445139341,Comm_A1,Even_Community,10,18S,Even1
+Microlaimus,2.0467152,Comm_A1,Even_Community,10,18S,Even1
+Daptonema,0.012600709,Comm_A1,Even_Community,0,18S,Even1
+Axonolaimus,12.18720025,Comm_A1,Even_Community,10,18S,Even1
+Desmolaimus,42.86349832,Comm_A1,Even_Community,10,18S,Even1
+Sabatieria,6.285733429,Comm_A2,Even_Community,10,18S,Even2
+Halomonhystera,36.42129713,Comm_A2,Even_Community,10,18S,Even2
+Leptolaimus,1.649321065,Comm_A2,Even_Community,10,18S,Even2
+Paracanthonchus,0.816285511,Comm_A2,Even_Community,10,18S,Even2
+Microlaimus,1.817938181,Comm_A2,Even_Community,10,18S,Even2
+Daptonema,0.018983384,Comm_A2,Even_Community,0,18S,Even2
+Axonolaimus,33.77255673,Comm_A2,Even_Community,10,18S,Even2
+Desmolaimus,16.48874397,Comm_A2,Even_Community,10,18S,Even2
+Sabatieria,13.29702323,Comm_A3,Even_Community,10,18S,Even3
+Halomonhystera,37.56613354,Comm_A3,Even_Community,10,18S,Even3
+Leptolaimus,1.327991973,Comm_A3,Even_Community,10,18S,Even3
+Paracanthonchus,1.495226222,Comm_A3,Even_Community,10,18S,Even3
+Microlaimus,1.394885672,Comm_A3,Even_Community,10,18S,Even3
+Daptonema,0.058531988,Comm_A3,Even_Community,0,18S,Even3
+Axonolaimus,14.47944539,Comm_A3,Even_Community,10,18S,Even3
+Desmolaimus,28.27665106,Comm_A3,Even_Community,10,18S,Even3
+Sabatieria,26.66130338,Comm_B1,Tolerant_Dominance,20,18S,Tol1
+Halomonhystera,36.12902642,Comm_B1,Tolerant_Dominance,15,18S,Tol1
+Leptolaimus,0.123611908,Comm_B1,Tolerant_Dominance,13,18S,Tol1
+Paracanthonchus,0.336486529,Comm_B1,Tolerant_Dominance,9,18S,Tol1
+Microlaimus,0.496933431,Comm_B1,Tolerant_Dominance,7,18S,Tol1
+Daptonema,11.90764586,Comm_B1,Tolerant_Dominance,8,18S,Tol1
+Axonolaimus,10.64892862,Comm_B1,Tolerant_Dominance,5,18S,Tol1
+Desmolaimus,13.02806239,Comm_B1,Tolerant_Dominance,3,18S,Tol1
+Sabatieria,20.18383291,Comm_B2,Tolerant_Dominance,20,18S,Tol2
+Halomonhystera,41.2434079,Comm_B2,Tolerant_Dominance,15,18S,Tol2
+Leptolaimus,0.211145989,Comm_B2,Tolerant_Dominance,13,18S,Tol2
+Paracanthonchus,1.048769088,Comm_B2,Tolerant_Dominance,9,18S,Tol2
+Microlaimus,0.169380848,Comm_B2,Tolerant_Dominance,7,18S,Tol2
+Daptonema,13.14242908,Comm_B2,Tolerant_Dominance,8,18S,Tol2
+Axonolaimus,14.56045504,Comm_B2,Tolerant_Dominance,5,18S,Tol2
+Desmolaimus,9.204904421,Comm_B2,Tolerant_Dominance,3,18S,Tol2
+Sabatieria,20.52937067,Comm_B3,Tolerant_Dominance,20,18S,Tol3
+Halomonhystera,38.32472034,Comm_B3,Tolerant_Dominance,15,18S,Tol3
+Leptolaimus,0.038395285,Comm_B3,Tolerant_Dominance,13,18S,Tol3
+Paracanthonchus,0.510207611,Comm_B3,Tolerant_Dominance,9,18S,Tol3
+Microlaimus,1.190945631,Comm_B3,Tolerant_Dominance,7,18S,Tol3
+Daptonema,2.7450899,Comm_B3,Tolerant_Dominance,8,18S,Tol3
+Axonolaimus,28.99086123,Comm_B3,Tolerant_Dominance,5,18S,Tol3
+Desmolaimus,7.337304305,Comm_B3,Tolerant_Dominance,3,18S,Tol3
+Sabatieria,0.463397121,Comm_C1,Less Sensitive_Dominance,4,18S,Les1
+Halomonhystera,40.80798252,Comm_C1,Less Sensitive_Dominance,5,18S,Les1
+Leptolaimus,0.010594176,Comm_C1,Less Sensitive_Dominance,3,18S,Les1
+Paracanthonchus,2.875337935,Comm_C1,Less Sensitive_Dominance,20,18S,Les1
+Microlaimus,10.74406431,Comm_C1,Less Sensitive_Dominance,15,18S,Les1
+Daptonema,4.103870013,Comm_C1,Less Sensitive_Dominance,16,18S,Les1
+Axonolaimus,18.4770283,Comm_C1,Less Sensitive_Dominance,9,18S,Les1
+Desmolaimus,21.44143579,Comm_C1,Less Sensitive_Dominance,8,18S,Les1
+Sabatieria,0.999237333,Comm_C2,Less Sensitive_Dominance,4,18S,Les2
+Halomonhystera,10.58178521,Comm_C2,Less Sensitive_Dominance,5,18S,Les2
+Leptolaimus,0.16865008,Comm_C2,Less Sensitive_Dominance,3,18S,Les2
+Paracanthonchus,1.812844459,Comm_C2,Less Sensitive_Dominance,20,18S,Les2
+Microlaimus,13.96946455,Comm_C2,Less Sensitive_Dominance,15,18S,Les2
+Daptonema,28.84808542,Comm_C2,Less Sensitive_Dominance,16,18S,Les2
+Axonolaimus,14.77501331,Comm_C2,Less Sensitive_Dominance,9,18S,Les2
+Desmolaimus,28.76894075,Comm_C2,Less Sensitive_Dominance,8,18S,Les2
+Sabatieria,0.104144089,Comm_C3,Less Sensitive_Dominance,4,18S,Les3
+Halomonhystera,11.44333839,Comm_C3,Less Sensitive_Dominance,5,18S,Les3
+Leptolaimus,0.283885156,Comm_C3,Less Sensitive_Dominance,3,18S,Les3
+Paracanthonchus,1.281800512,Comm_C3,Less Sensitive_Dominance,20,18S,Les3
+Microlaimus,10.20189151,Comm_C3,Less Sensitive_Dominance,15,18S,Les3
+Daptonema,42.55704577,Comm_C3,Less Sensitive_Dominance,16,18S,Les3
+Axonolaimus,13.8404146,Comm_C3,Less Sensitive_Dominance,9,18S,Les3
+Desmolaimus,19.03581253,Comm_C3,Less Sensitive_Dominance,8,18S,Les3
+Sabatieria,3.233405682,Comm_D1,Sensitive_Dominance,5,18S,Sen1
+Halomonhystera,8.067349148,Comm_D1,Sensitive_Dominance,4,18S,Sen1
+Leptolaimus,0,Comm_D1,Sensitive_Dominance,3,18S,Sen1
+Paracanthonchus,1.396897492,Comm_D1,Sensitive_Dominance,12,18S,Sen1
+Microlaimus,1.961294545,Comm_D1,Sensitive_Dominance,10,18S,Sen1
+Daptonema,14.87717513,Comm_D1,Sensitive_Dominance,9,18S,Sen1
+Axonolaimus,9.501110855,Comm_D1,Sensitive_Dominance,20,18S,Sen1
+Desmolaimus,42.41947535,Comm_D1,Sensitive_Dominance,17,18S,Sen1
+Sabatieria,5.706636295,Comm_D2,Sensitive_Dominance,5,18S,Sen2
+Halomonhystera,6.807138473,Comm_D2,Sensitive_Dominance,4,18S,Sen2
+Leptolaimus,0,Comm_D2,Sensitive_Dominance,3,18S,Sen2
+Paracanthonchus,1.361575611,Comm_D2,Sensitive_Dominance,12,18S,Sen2
+Microlaimus,1.858946388,Comm_D2,Sensitive_Dominance,10,18S,Sen2
+Daptonema,21.42133406,Comm_D2,Sensitive_Dominance,9,18S,Sen2
+Axonolaimus,13.21896887,Comm_D2,Sensitive_Dominance,20,18S,Sen2
+Desmolaimus,49.57621791,Comm_D2,Sensitive_Dominance,17,18S,Sen2
+Sabatieria,2.245069864,Comm_D3,Sensitive_Dominance,5,18S,Sen3
+Halomonhystera,8.596769399,Comm_D3,Sensitive_Dominance,4,18S,Sen3
+Leptolaimus,0.090674859,Comm_D3,Sensitive_Dominance,3,18S,Sen3
+Paracanthonchus,0.472698445,Comm_D3,Sensitive_Dominance,12,18S,Sen3
+Microlaimus,3.004162126,Comm_D3,Sensitive_Dominance,10,18S,Sen3
+Daptonema,11.77831731,Comm_D3,Sensitive_Dominance,9,18S,Sen3
+Axonolaimus,19.24487167,Comm_D3,Sensitive_Dominance,20,18S,Sen3
+Desmolaimus,54.42423942,Comm_D3,Sensitive_Dominance,17,18S,Sen3
+Sabatieria,14.28571429,Comm_A,Even_Community,10,18S,Even
+Leptolaimus,14.28571429,Comm_A,Even_Community,10,18S,Even
+Halomonhystera,14.28571429,Comm_A,Even_Community,10,18S,Even
+Paracanthonchus,14.28571429,Comm_A,Even_Community,10,18S,Even
+Daptonema,0,Comm_A,Even_Community,10,18S,Even
+Microlaimus,14.28571429,Comm_A,Even_Community,0,18S,Even
+Axonolaimus,14.28571429,Comm_A,Even_Community,10,18S,Even
+Desmolaimus,14.28571429,Comm_A,Even_Community,10,18S,Even
+Sabatieria,25,Comm_B,Tolerant_Dominance,20,18S,Tol
+Leptolaimus,18.75,Comm_B,Tolerant_Dominance,15,18S,Tol
+Halomonhystera,16.25,Comm_B,Tolerant_Dominance,13,18S,Tol
+Paracanthonchus,11.25,Comm_B,Tolerant_Dominance,9,18S,Tol
+Daptonema,10,Comm_B,Tolerant_Dominance,7,18S,Tol
+Microlaimus,8.75,Comm_B,Tolerant_Dominance,8,18S,Tol
+Axonolaimus,6.25,Comm_B,Tolerant_Dominance,5,18S,Tol
+Desmolaimus,3.75,Comm_B,Tolerant_Dominance,3,18S,Tol
+Sabatieria,5,Comm_C,Less Sensitive_Dominance,4,18S,Les
+Leptolaimus,6.25,Comm_C,Less Sensitive_Dominance,5,18S,Les
+Halomonhystera,3.75,Comm_C,Less Sensitive_Dominance,3,18S,Les
+Paracanthonchus,25,Comm_C,Less Sensitive_Dominance,20,18S,Les
+Daptonema,20,Comm_C,Less Sensitive_Dominance,15,18S,Les
+Microlaimus,18.75,Comm_C,Less Sensitive_Dominance,16,18S,Les
+Axonolaimus,11.25,Comm_C,Less Sensitive_Dominance,9,18S,Les
+Desmolaimus,10,Comm_C,Less Sensitive_Dominance,8,18S,Les
+Sabatieria,6.25,Comm_D,Sensitive_Dominance,5,18S,Sen
+Leptolaimus,5,Comm_D,Sensitive_Dominance,4,18S,Sen
+Halomonhystera,3.75,Comm_D,Sensitive_Dominance,3,18S,Sen
+Paracanthonchus,15,Comm_D,Sensitive_Dominance,12,18S,Sen
+Daptonema,11.25,Comm_D,Sensitive_Dominance,10,18S,Sen
+Microlaimus,12.5,Comm_D,Sensitive_Dominance,9,18S,Sen
+Axonolaimus,25,Comm_D,Sensitive_Dominance,20,18S,Sen
+Desmolaimus,21.25,Comm_D,Sensitive_Dominance,17,18S,Sen
+Sabatieria,0.911134557,Comm_A1,Even_Community,10,28S,Even1
+Halomonhystera,0.44646221,Comm_A1,Even_Community,10,28S,Even1
+Leptolaimus,0.021977747,Comm_A1,Even_Community,10,28S,Even1
+Paracanthonchus,0.018838069,Comm_A1,Even_Community,10,28S,Even1
+Microlaimus,3.102629795,Comm_A1,Even_Community,10,28S,Even1
+Daptonema,0.021977746,Comm_A1,Even_Community,0,28S,Even1
+Axonolaimus,0.31836335,Comm_A1,Even_Community,10,28S,Even1
+Desmolaimus,95.15861653,Comm_A1,Even_Community,10,28S,Even1
+Sabatieria,2.210032177,Comm_A2,Even_Community,10,28S,Even2
+Halomonhystera,2.246953954,Comm_A2,Even_Community,10,28S,Even2
+Leptolaimus,0.975789863,Comm_A2,Even_Community,10,28S,Even2
+Paracanthonchus,0.00527454,Comm_A2,Even_Community,10,28S,Even2
+Microlaimus,8.381243739,Comm_A2,Even_Community,10,28S,Even2
+Daptonema,0.131863495,Comm_A2,Even_Community,0,28S,Even2
+Axonolaimus,2.130914081,Comm_A2,Even_Community,10,28S,Even2
+Desmolaimus,83.91792816,Comm_A2,Even_Community,10,28S,Even2
+Sabatieria,2.326203689,Comm_A3,Even_Community,10,28S,Even3
+Halomonhystera,0.394241576,Comm_A3,Even_Community,10,28S,Even3
+Leptolaimus,0,Comm_A3,Even_Community,10,28S,Even3
+Paracanthonchus,0.001783899,Comm_A3,Even_Community,10,28S,Even3
+Microlaimus,3.482169937,Comm_A3,Even_Community,10,28S,Even3
+Daptonema,0.133792391,Comm_A3,Even_Community,0,28S,Even3
+Axonolaimus,0.128440695,Comm_A3,Even_Community,10,28S,Even3
+Desmolaimus,93.53336782,Comm_A3,Even_Community,10,28S,Even3
+Sabatieria,2.892102338,Comm_B1,Tolerant_Dominance,20,28S,Tol1
+Halomonhystera,0.313479624,Comm_B1,Tolerant_Dominance,15,28S,Tol1
+Leptolaimus,0,Comm_B1,Tolerant_Dominance,13,28S,Tol1
+Paracanthonchus,0.016179593,Comm_B1,Tolerant_Dominance,9,28S,Tol1
+Microlaimus,1.458185862,Comm_B1,Tolerant_Dominance,7,28S,Tol1
+Daptonema,50.6825766,Comm_B1,Tolerant_Dominance,8,28S,Tol1
+Axonolaimus,0.103144909,Comm_B1,Tolerant_Dominance,5,28S,Tol1
+Desmolaimus,44.53433107,Comm_B1,Tolerant_Dominance,3,28S,Tol1
+Sabatieria,2.026200873,Comm_B2,Tolerant_Dominance,20,28S,Tol2
+Halomonhystera,0.022457892,Comm_B2,Tolerant_Dominance,15,28S,Tol2
+Leptolaimus,0,Comm_B2,Tolerant_Dominance,13,28S,Tol2
+Paracanthonchus,0,Comm_B2,Tolerant_Dominance,9,28S,Tol2
+Microlaimus,0.596381784,Comm_B2,Tolerant_Dominance,7,28S,Tol2
+Daptonema,46.38802246,Comm_B2,Tolerant_Dominance,8,28S,Tol2
+Axonolaimus,0.007485964,Comm_B2,Tolerant_Dominance,5,28S,Tol2
+Desmolaimus,50.95945103,Comm_B2,Tolerant_Dominance,3,28S,Tol2
+Sabatieria,2.865646582,Comm_B3,Tolerant_Dominance,20,28S,Tol3
+Halomonhystera,0.801312627,Comm_B3,Tolerant_Dominance,15,28S,Tol3
+Leptolaimus,0,Comm_B3,Tolerant_Dominance,13,28S,Tol3
+Paracanthonchus,0.003815774,Comm_B3,Tolerant_Dominance,9,28S,Tol3
+Microlaimus,8.52825581,Comm_B3,Tolerant_Dominance,7,28S,Tol3
+Daptonema,19.62071202,Comm_B3,Tolerant_Dominance,8,28S,Tol3
+Axonolaimus,0.370130114,Comm_B3,Tolerant_Dominance,5,28S,Tol3
+Desmolaimus,67.81012707,Comm_B3,Tolerant_Dominance,3,28S,Tol3
+Sabatieria,0.147891571,Comm_C1,Less Sensitive_Dominance,4,28S,Les1
+Halomonhystera,1.855455446,Comm_C1,Less Sensitive_Dominance,5,28S,Les1
+Leptolaimus,0.632431065,Comm_C1,Less Sensitive_Dominance,3,28S,Les1
+Paracanthonchus,0.23448598,Comm_C1,Less Sensitive_Dominance,20,28S,Les1
+Microlaimus,26.57961821,Comm_C1,Less Sensitive_Dominance,15,28S,Les1
+Daptonema,9.788086946,Comm_C1,Less Sensitive_Dominance,16,28S,Les1
+Axonolaimus,1.206483881,Comm_C1,Less Sensitive_Dominance,9,28S,Les1
+Desmolaimus,59.55554691,Comm_C1,Less Sensitive_Dominance,8,28S,Les1
+Sabatieria,0.534931578,Comm_C2,Less Sensitive_Dominance,4,28S,Les2
+Halomonhystera,0.407748866,Comm_C2,Less Sensitive_Dominance,5,28S,Les2
+Leptolaimus,0.323142341,Comm_C2,Less Sensitive_Dominance,3,28S,Les2
+Paracanthonchus,0.602070951,Comm_C2,Less Sensitive_Dominance,20,28S,Les2
+Microlaimus,20.45894946,Comm_C2,Less Sensitive_Dominance,15,28S,Les2
+Daptonema,27.19035377,Comm_C2,Less Sensitive_Dominance,16,28S,Les2
+Axonolaimus,0.268011639,Comm_C2,Less Sensitive_Dominance,9,28S,Les2
+Desmolaimus,50.21479141,Comm_C2,Less Sensitive_Dominance,8,28S,Les2
+Sabatieria,0.599931043,Comm_C3,Less Sensitive_Dominance,4,28S,Les3
+Halomonhystera,0.913688081,Comm_C3,Less Sensitive_Dominance,5,28S,Les3
+Leptolaimus,0.002298586,Comm_C3,Less Sensitive_Dominance,3,28S,Les3
+Paracanthonchus,0.194230548,Comm_C3,Less Sensitive_Dominance,20,28S,Les3
+Microlaimus,19.41386048,Comm_C3,Less Sensitive_Dominance,15,28S,Les3
+Daptonema,31.15389036,Comm_C3,Less Sensitive_Dominance,16,28S,Les3
+Axonolaimus,0.687277323,Comm_C3,Less Sensitive_Dominance,9,28S,Les3
+Desmolaimus,47.03482359,Comm_C3,Less Sensitive_Dominance,8,28S,Les3
+Sabatieria,22.50606305,Comm_D1,Sensitive_Dominance,5,28S,Sen1
+Halomonhystera,0.557556159,Comm_D1,Sensitive_Dominance,4,28S,Sen1
+Leptolaimus,0,Comm_D1,Sensitive_Dominance,3,28S,Sen1
+Paracanthonchus,0.110237377,Comm_D1,Sensitive_Dominance,12,28S,Sen1
+Microlaimus,1.614365153,Comm_D1,Sensitive_Dominance,10,28S,Sen1
+Daptonema,10.06099802,Comm_D1,Sensitive_Dominance,9,28S,Sen1
+Axonolaimus,0.520810371,Comm_D1,Sensitive_Dominance,20,28S,Sen1
+Desmolaimus,64.62996987,Comm_D1,Sensitive_Dominance,17,28S,Sen1
+Sabatieria,0.434610824,Comm_D2,Sensitive_Dominance,5,28S,Sen2
+Halomonhystera,0.050093131,Comm_D2,Sensitive_Dominance,4,28S,Sen2
+Leptolaimus,0,Comm_D2,Sensitive_Dominance,3,28S,Sen2
+Paracanthonchus,0.012699667,Comm_D2,Sensitive_Dominance,12,28S,Sen2
+Microlaimus,1.9592764,Comm_D2,Sensitive_Dominance,10,28S,Sen2
+Daptonema,17.37102783,Comm_D2,Sensitive_Dominance,9,28S,Sen2
+Axonolaimus,0.04797652,Comm_D2,Sensitive_Dominance,20,28S,Sen2
+Desmolaimus,80.12431563,Comm_D2,Sensitive_Dominance,17,28S,Sen2
+Sabatieria,0.22017388,Comm_D3,Sensitive_Dominance,5,28S,Sen3
+Halomonhystera,0.044650647,Comm_D3,Sensitive_Dominance,4,28S,Sen3
+Leptolaimus,0,Comm_D3,Sensitive_Dominance,3,28S,Sen3
+Paracanthonchus,0.01847613,Comm_D3,Sensitive_Dominance,12,28S,Sen3
+Microlaimus,2.853535613,Comm_D3,Sensitive_Dominance,10,28S,Sen3
+Daptonema,9.453106554,Comm_D3,Sensitive_Dominance,9,28S,Sen3
+Axonolaimus,0.040031613,Comm_D3,Sensitive_Dominance,20,28S,Sen3
+Desmolaimus,87.37002555,Comm_D3,Sensitive_Dominance,17,28S,Sen3
+Sabatieria,14.28571429,Comm_A,Even_Community,10,28S,Even
+Leptolaimus,14.28571429,Comm_A,Even_Community,10,28S,Even
+Halomonhystera,14.28571429,Comm_A,Even_Community,10,28S,Even
+Paracanthonchus,14.28571429,Comm_A,Even_Community,10,28S,Even
+Daptonema,0,Comm_A,Even_Community,10,28S,Even
+Microlaimus,14.28571429,Comm_A,Even_Community,0,28S,Even
+Axonolaimus,14.28571429,Comm_A,Even_Community,10,28S,Even
+Desmolaimus,14.28571429,Comm_A,Even_Community,10,28S,Even
+Sabatieria,25,Comm_B,Tolerant_Dominance,20,28S,Tol
+Leptolaimus,18.75,Comm_B,Tolerant_Dominance,15,28S,Tol
+Halomonhystera,16.25,Comm_B,Tolerant_Dominance,13,28S,Tol
+Paracanthonchus,11.25,Comm_B,Tolerant_Dominance,9,28S,Tol
+Daptonema,10,Comm_B,Tolerant_Dominance,7,28S,Tol
+Microlaimus,8.75,Comm_B,Tolerant_Dominance,8,28S,Tol
+Axonolaimus,6.25,Comm_B,Tolerant_Dominance,5,28S,Tol
+Desmolaimus,3.75,Comm_B,Tolerant_Dominance,3,28S,Tol
+Sabatieria,5,Comm_C,Less Sensitive_Dominance,4,28S,Les
+Leptolaimus,6.25,Comm_C,Less Sensitive_Dominance,5,28S,Les
+Halomonhystera,3.75,Comm_C,Less Sensitive_Dominance,3,28S,Les
+Paracanthonchus,25,Comm_C,Less Sensitive_Dominance,20,28S,Les
+Daptonema,20,Comm_C,Less Sensitive_Dominance,15,28S,Les
+Microlaimus,18.75,Comm_C,Less Sensitive_Dominance,16,28S,Les
+Axonolaimus,11.25,Comm_C,Less Sensitive_Dominance,9,28S,Les
+Desmolaimus,10,Comm_C,Less Sensitive_Dominance,8,28S,Les
+Sabatieria,6.25,Comm_D,Sensitive_Dominance,5,28S,Sen
+Leptolaimus,5,Comm_D,Sensitive_Dominance,4,28S,Sen
+Halomonhystera,3.75,Comm_D,Sensitive_Dominance,3,28S,Sen
+Paracanthonchus,15,Comm_D,Sensitive_Dominance,12,28S,Sen
+Daptonema,11.25,Comm_D,Sensitive_Dominance,10,28S,Sen
+Microlaimus,12.5,Comm_D,Sensitive_Dominance,9,28S,Sen
+Axonolaimus,25,Comm_D,Sensitive_Dominance,20,28S,Sen
+Desmolaimus,21.25,Comm_D,Sensitive_Dominance,17,28S,Sen
+Sabatieria,14.41168366,Comm_A1,Even_Community,10,Shotgun,Even1
+Halomonhystera,21.37112537,Comm_A1,Even_Community,10,Shotgun,Even1
+Leptolaimus,1.086211205,Comm_A1,Even_Community,10,Shotgun,Even1
+Paracanthonchus,8.817856159,Comm_A1,Even_Community,10,Shotgun,Even1
+Microlaimus,2.019263427,Comm_A1,Even_Community,10,Shotgun,Even1
+Daptonema,7.987337149,Comm_A1,Even_Community,0,Shotgun,Even1
+Axonolaimus,10.15847789,Comm_A1,Even_Community,10,Shotgun,Even1
+Desmolaimus,11.12613507,Comm_A1,Even_Community,10,Shotgun,Even1
+Sabatieria,14.46986954,Comm_A2,Even_Community,10,Shotgun,Even2
+Halomonhystera,23.11684613,Comm_A2,Even_Community,10,Shotgun,Even2
+Leptolaimus,1.186192793,Comm_A2,Even_Community,10,Shotgun,Even2
+Paracanthonchus,8.796464071,Comm_A2,Even_Community,10,Shotgun,Even2
+Microlaimus,1.885095257,Comm_A2,Even_Community,10,Shotgun,Even2
+Daptonema,9.127795611,Comm_A2,Even_Community,0,Shotgun,Even2
+Axonolaimus,12.04247774,Comm_A2,Even_Community,10,Shotgun,Even2
+Desmolaimus,9.450714434,Comm_A2,Even_Community,10,Shotgun,Even2
+Sabatieria,11.08926248,Comm_A3,Even_Community,10,Shotgun,Even3
+Halomonhystera,17.87081763,Comm_A3,Even_Community,10,Shotgun,Even3
+Leptolaimus,0.898304154,Comm_A3,Even_Community,10,Shotgun,Even3
+Paracanthonchus,11.34941039,Comm_A3,Even_Community,10,Shotgun,Even3
+Microlaimus,1.305014259,Comm_A3,Even_Community,10,Shotgun,Even3
+Daptonema,7.46734411,Comm_A3,Even_Community,0,Shotgun,Even3
+Axonolaimus,9.503948019,Comm_A3,Even_Community,10,Shotgun,Even3
+Desmolaimus,13.27853535,Comm_A3,Even_Community,10,Shotgun,Even3
+Sabatieria,19.04345337,Comm_B1,Tolerant_Dominance,20,Shotgun,Tol1
+Halomonhystera,19.46070322,Comm_B1,Tolerant_Dominance,15,Shotgun,Tol1
+Leptolaimus,0.733235782,Comm_B1,Tolerant_Dominance,13,Shotgun,Tol1
+Paracanthonchus,3.892564788,Comm_B1,Tolerant_Dominance,9,Shotgun,Tol1
+Microlaimus,0.631971838,Comm_B1,Tolerant_Dominance,7,Shotgun,Tol1
+Daptonema,32.93092844,Comm_B1,Tolerant_Dominance,8,Shotgun,Tol1
+Axonolaimus,3.322093567,Comm_B1,Tolerant_Dominance,5,Shotgun,Tol1
+Desmolaimus,2.764876787,Comm_B1,Tolerant_Dominance,3,Shotgun,Tol1
+Sabatieria,16.78579106,Comm_B2,Tolerant_Dominance,20,Shotgun,Tol2
+Halomonhystera,24.73291058,Comm_B2,Tolerant_Dominance,15,Shotgun,Tol2
+Leptolaimus,0.844797936,Comm_B2,Tolerant_Dominance,13,Shotgun,Tol2
+Paracanthonchus,5.784071367,Comm_B2,Tolerant_Dominance,9,Shotgun,Tol2
+Microlaimus,0.299871022,Comm_B2,Tolerant_Dominance,7,Shotgun,Tol2
+Daptonema,30.37188306,Comm_B2,Tolerant_Dominance,8,Shotgun,Tol2
+Axonolaimus,3.264187446,Comm_B2,Tolerant_Dominance,5,Shotgun,Tol2
+Desmolaimus,1.944325022,Comm_B2,Tolerant_Dominance,3,Shotgun,Tol2
+Sabatieria,19.87209615,Comm_B3,Tolerant_Dominance,20,Shotgun,Tol3
+Halomonhystera,16.85689987,Comm_B3,Tolerant_Dominance,15,Shotgun,Tol3
+Leptolaimus,0.638400251,Comm_B3,Tolerant_Dominance,13,Shotgun,Tol3
+Paracanthonchus,4.949979857,Comm_B3,Tolerant_Dominance,9,Shotgun,Tol3
+Microlaimus,0.663018664,Comm_B3,Tolerant_Dominance,7,Shotgun,Tol3
+Daptonema,22.12915715,Comm_B3,Tolerant_Dominance,8,Shotgun,Tol3
+Axonolaimus,6.708517973,Comm_B3,Tolerant_Dominance,5,Shotgun,Tol3
+Desmolaimus,1.842464527,Comm_B3,Tolerant_Dominance,3,Shotgun,Tol3
+Sabatieria,5.131872686,Comm_C1,Less Sensitive_Dominance,4,Shotgun,Les1
+Halomonhystera,13.56691218,Comm_C1,Less Sensitive_Dominance,5,Shotgun,Les1
+Leptolaimus,0.341545577,Comm_C1,Less Sensitive_Dominance,3,Shotgun,Les1
+Paracanthonchus,8.72645608,Comm_C1,Less Sensitive_Dominance,20,Shotgun,Les1
+Microlaimus,3.194888178,Comm_C1,Less Sensitive_Dominance,15,Shotgun,Les1
+Daptonema,31.80785221,Comm_C1,Less Sensitive_Dominance,16,Shotgun,Les1
+Axonolaimus,10.53176842,Comm_C1,Less Sensitive_Dominance,9,Shotgun,Les1
+Desmolaimus,7.950459182,Comm_C1,Less Sensitive_Dominance,8,Shotgun,Les1
+Sabatieria,4.777918881,Comm_C2,Less Sensitive_Dominance,4,Shotgun,Les2
+Halomonhystera,2.863615697,Comm_C2,Less Sensitive_Dominance,5,Shotgun,Les2
+Leptolaimus,0.587930954,Comm_C2,Less Sensitive_Dominance,3,Shotgun,Les2
+Paracanthonchus,9.191320571,Comm_C2,Less Sensitive_Dominance,20,Shotgun,Les2
+Microlaimus,3.966574166,Comm_C2,Less Sensitive_Dominance,15,Shotgun,Les2
+Daptonema,36.97772134,Comm_C2,Less Sensitive_Dominance,16,Shotgun,Les2
+Axonolaimus,10.46673879,Comm_C2,Less Sensitive_Dominance,9,Shotgun,Les2
+Desmolaimus,10.18453193,Comm_C2,Less Sensitive_Dominance,8,Shotgun,Les2
+Sabatieria,1.929833854,Comm_C3,Less Sensitive_Dominance,4,Shotgun,Les3
+Halomonhystera,3.810230061,Comm_C3,Less Sensitive_Dominance,5,Shotgun,Les3
+Leptolaimus,0.566767308,Comm_C3,Less Sensitive_Dominance,3,Shotgun,Les3
+Paracanthonchus,6.01138243,Comm_C3,Less Sensitive_Dominance,20,Shotgun,Les3
+Microlaimus,2.689643402,Comm_C3,Less Sensitive_Dominance,15,Shotgun,Les3
+Daptonema,54.95818399,Comm_C3,Less Sensitive_Dominance,16,Shotgun,Les3
+Axonolaimus,6.113788983,Comm_C3,Less Sensitive_Dominance,9,Shotgun,Les3
+Desmolaimus,6.425716993,Comm_C3,Less Sensitive_Dominance,8,Shotgun,Les3
+Sabatieria,3.748442286,Comm_D1,Sensitive_Dominance,5,Shotgun,Sen1
+Halomonhystera,2.61745533,Comm_D1,Sensitive_Dominance,4,Shotgun,Sen1
+Leptolaimus,0.202068346,Comm_D1,Sensitive_Dominance,3,Shotgun,Sen1
+Paracanthonchus,8.914341888,Comm_D1,Sensitive_Dominance,12,Shotgun,Sen1
+Microlaimus,1.008852281,Comm_D1,Sensitive_Dominance,10,Shotgun,Sen1
+Daptonema,21.61634817,Comm_D1,Sensitive_Dominance,9,Shotgun,Sen1
+Axonolaimus,12.33113392,Comm_D1,Sensitive_Dominance,20,Shotgun,Sen1
+Desmolaimus,7.167220245,Comm_D1,Sensitive_Dominance,17,Shotgun,Sen1
+Sabatieria,3.866835094,Comm_D2,Sensitive_Dominance,5,Shotgun,Sen2
+Halomonhystera,3.061119978,Comm_D2,Sensitive_Dominance,4,Shotgun,Sen2
+Leptolaimus,0.175823425,Comm_D2,Sensitive_Dominance,3,Shotgun,Sen2
+Paracanthonchus,9.756919846,Comm_D2,Sensitive_Dominance,12,Shotgun,Sen2
+Microlaimus,0.87783686,Comm_D2,Sensitive_Dominance,10,Shotgun,Sen2
+Daptonema,18.59033995,Comm_D2,Sensitive_Dominance,9,Shotgun,Sen2
+Axonolaimus,12.61661105,Comm_D2,Sensitive_Dominance,20,Shotgun,Sen2
+Desmolaimus,8.559442827,Comm_D2,Sensitive_Dominance,17,Shotgun,Sen2
+Sabatieria,4.622716441,Comm_D3,Sensitive_Dominance,5,Shotgun,Sen3
+Halomonhystera,2.696584591,Comm_D3,Sensitive_Dominance,4,Shotgun,Sen3
+Leptolaimus,0.309202315,Comm_D3,Sensitive_Dominance,3,Shotgun,Sen3
+Paracanthonchus,9.769091115,Comm_D3,Sensitive_Dominance,12,Shotgun,Sen3
+Microlaimus,1.061500056,Comm_D3,Sensitive_Dominance,10,Shotgun,Sen3
+Daptonema,14.14671508,Comm_D3,Sensitive_Dominance,9,Shotgun,Sen3
+Axonolaimus,13.5782367,Comm_D3,Sensitive_Dominance,20,Shotgun,Sen3
+Desmolaimus,9.909792352,Comm_D3,Sensitive_Dominance,17,Shotgun,Sen3
+Sabatieria,14.28571429,Comm_A,Even_Community,10,Shotgun,Even
+Leptolaimus,14.28571429,Comm_A,Even_Community,10,Shotgun,Even
+Halomonhystera,14.28571429,Comm_A,Even_Community,10,Shotgun,Even
+Paracanthonchus,14.28571429,Comm_A,Even_Community,10,Shotgun,Even
+Daptonema,0,Comm_A,Even_Community,10,Shotgun,Even
+Microlaimus,14.28571429,Comm_A,Even_Community,0,Shotgun,Even
+Axonolaimus,14.28571429,Comm_A,Even_Community,10,Shotgun,Even
+Desmolaimus,14.28571429,Comm_A,Even_Community,10,Shotgun,Even
+Sabatieria,25,Comm_B,Tolerant_Dominance,20,Shotgun,Tol
+Leptolaimus,18.75,Comm_B,Tolerant_Dominance,15,Shotgun,Tol
+Halomonhystera,16.25,Comm_B,Tolerant_Dominance,13,Shotgun,Tol
+Paracanthonchus,11.25,Comm_B,Tolerant_Dominance,9,Shotgun,Tol
+Daptonema,10,Comm_B,Tolerant_Dominance,7,Shotgun,Tol
+Microlaimus,8.75,Comm_B,Tolerant_Dominance,8,Shotgun,Tol
+Axonolaimus,6.25,Comm_B,Tolerant_Dominance,5,Shotgun,Tol
+Desmolaimus,3.75,Comm_B,Tolerant_Dominance,3,Shotgun,Tol
+Sabatieria,5,Comm_C,Less Sensitive_Dominance,4,Shotgun,Les
+Leptolaimus,6.25,Comm_C,Less Sensitive_Dominance,5,Shotgun,Les
+Halomonhystera,3.75,Comm_C,Less Sensitive_Dominance,3,Shotgun,Les
+Paracanthonchus,25,Comm_C,Less Sensitive_Dominance,20,Shotgun,Les
+Daptonema,20,Comm_C,Less Sensitive_Dominance,15,Shotgun,Les
+Microlaimus,18.75,Comm_C,Less Sensitive_Dominance,16,Shotgun,Les
+Axonolaimus,11.25,Comm_C,Less Sensitive_Dominance,9,Shotgun,Les
+Desmolaimus,10,Comm_C,Less Sensitive_Dominance,8,Shotgun,Les
+Sabatieria,6.25,Comm_D,Sensitive_Dominance,5,Shotgun,Sen
+Leptolaimus,5,Comm_D,Sensitive_Dominance,4,Shotgun,Sen
+Halomonhystera,3.75,Comm_D,Sensitive_Dominance,3,Shotgun,Sen
+Paracanthonchus,15,Comm_D,Sensitive_Dominance,12,Shotgun,Sen
+Daptonema,11.25,Comm_D,Sensitive_Dominance,10,Shotgun,Sen
+Microlaimus,12.5,Comm_D,Sensitive_Dominance,9,Shotgun,Sen
+Axonolaimus,25,Comm_D,Sensitive_Dominance,20,Shotgun,Sen
+Desmolaimus,21.25,Comm_D,Sensitive_Dominance,17,Shotgun,Sen

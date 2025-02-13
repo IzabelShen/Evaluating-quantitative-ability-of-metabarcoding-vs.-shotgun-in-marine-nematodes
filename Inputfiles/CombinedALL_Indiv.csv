@@ -1,0 +1,169 @@
+Grouping,Relative,Sample1,Type,Sequence,Sample
+Tolerant,41.56459663,Comm_A1,Even_Community,18S,Even1
+Sensitive,55.05069857,Comm_A1,Even_Community,18S,Even1
+Less Sensitive,2.50445525,Comm_A1,Even_Community,18S,Even1
+Others,0.880249546,Comm_A1,Even_Community,18S,Even1
+Tolerant,44.35635162,Comm_A2,Even_Community,18S,Even2
+Sensitive,50.26130069,Comm_A2,Even_Community,18S,Even2
+Less Sensitive,2.653207076,Comm_A2,Even_Community,18S,Even2
+Others,2.729140609,Comm_A2,Even_Community,18S,Even2
+Tolerant,52.19114874,Comm_A3,Even_Community,18S,Even3
+Sensitive,42.75609645,Comm_A3,Even_Community,18S,Even3
+Less Sensitive,2.948643882,Comm_A3,Even_Community,18S,Even3
+Others,2.104110922,Comm_A3,Even_Community,18S,Even3
+Tolerant,62.91394171,Comm_B1,Tolerant_Dominance,18S,Tol1
+Sensitive,23.67699101,Comm_B1,Tolerant_Dominance,18S,Tol1
+Less Sensitive,12.74106582,Comm_B1,Tolerant_Dominance,18S,Tol1
+Others,0.668001465,Comm_B1,Tolerant_Dominance,18S,Tol1
+Tolerant,61.6383868,Comm_B2,Tolerant_Dominance,18S,Tol2
+Sensitive,23.76535946,Comm_B2,Tolerant_Dominance,18S,Tol2
+Less Sensitive,14.36057901,Comm_B2,Tolerant_Dominance,18S,Tol2
+Others,0.235674723,Comm_B2,Tolerant_Dominance,18S,Tol2
+Tolerant,58.89248629,Comm_B3,Tolerant_Dominance,18S,Tol3
+Sensitive,36.32816553,Comm_B3,Tolerant_Dominance,18S,Tol3
+Less Sensitive,4.446243142,Comm_B3,Tolerant_Dominance,18S,Tol3
+Others,0.333105037,Comm_B3,Tolerant_Dominance,18S,Tol3
+Tolerant,41.28197381,Comm_C1,Less Sensitive_Dominance,18S,Les1
+Sensitive,39.91846408,Comm_C1,Less Sensitive_Dominance,18S,Les1
+Less Sensitive,17.72327227,Comm_C1,Less Sensitive_Dominance,18S,Les1
+Others,1.076289842,Comm_C1,Less Sensitive_Dominance,18S,Les1
+Tolerant,11.74967263,Comm_C2,Less Sensitive_Dominance,18S,Les2
+Sensitive,43.54395407,Comm_C2,Less Sensitive_Dominance,18S,Les2
+Less Sensitive,44.63039443,Comm_C2,Less Sensitive_Dominance,18S,Les2
+Others,0.075978876,Comm_C2,Less Sensitive_Dominance,18S,Les2
+Tolerant,11.83136764,Comm_C3,Less Sensitive_Dominance,18S,Les3
+Sensitive,32.87622713,Comm_C3,Less Sensitive_Dominance,18S,Les3
+Less Sensitive,54.04073779,Comm_C3,Less Sensitive_Dominance,18S,Les3
+Others,1.25166745,Comm_C3,Less Sensitive_Dominance,18S,Les3
+Tolerant,11.30075483,Comm_D1,Sensitive_Dominance,18S,Sen1
+Sensitive,51.9205862,Comm_D1,Sensitive_Dominance,18S,Sen1
+Less Sensitive,18.23536717,Comm_D1,Sensitive_Dominance,18S,Sen1
+Others,18.5432918,Comm_D1,Sensitive_Dominance,18S,Sen1
+Tolerant,12.51377477,Comm_D2,Sensitive_Dominance,18S,Sen2
+Sensitive,62.79518678,Comm_D2,Sensitive_Dominance,18S,Sen2
+Less Sensitive,24.64185606,Comm_D2,Sensitive_Dominance,18S,Sen2
+Others,0.049182389,Comm_D2,Sensitive_Dominance,18S,Sen2
+Tolerant,10.93251412,Comm_D3,Sensitive_Dominance,18S,Sen3
+Sensitive,73.66911109,Comm_D3,Sensitive_Dominance,18S,Sen3
+Less Sensitive,15.25517788,Comm_D3,Sensitive_Dominance,18S,Sen3
+Others,0.143196908,Comm_D3,Sensitive_Dominance,18S,Sen3
+Tolerant,42.85714286,Comm_A,Even_Community,18S,Even
+Less Sensitive,28.57142857,Comm_A,Even_Community,18S,Even
+Sensitive,28.57142857,Comm_A,Even_Community,18S,Even
+Tolerant,60,Comm_B,Tolerant_Dominance,18S,Tol
+Less Sensitive,30,Comm_B,Tolerant_Dominance,18S,Tol
+Sensitive,10,Comm_B,Tolerant_Dominance,18S,Tol
+Tolerant,15,Comm_C,Less Sensitive_Dominance,18S,Les
+Less Sensitive,63.75,Comm_C,Less Sensitive_Dominance,18S,Les
+Sensitive,21.25,Comm_C,Less Sensitive_Dominance,18S,Les
+Tolerant,15,Comm_D,Sensitive_Dominance,18S,Sen
+Less Sensitive,38.75,Comm_D,Sensitive_Dominance,18S,Sen
+Sensitive,46.25,Comm_D,Sensitive_Dominance,18S,Sen
+Tolerant,1.379574514,Comm_A1,Even_Community,28S,Even1
+Sensitive,95.47697988,Comm_A1,Even_Community,28S,Even1
+Less Sensitive,3.14344561,Comm_A1,Even_Community,28S,Even1
+Tolerant,5.432775994,Comm_A2,Even_Community,28S,Even2
+Sensitive,86.04884224,Comm_A2,Even_Community,28S,Even2
+Less Sensitive,8.518381774,Comm_A2,Even_Community,28S,Even2
+Tolerant,2.720445265,Comm_A3,Even_Community,28S,Even3
+Sensitive,93.66180851,Comm_A3,Even_Community,28S,Even3
+Less Sensitive,3.617746227,Comm_A3,Even_Community,28S,Even3
+Tolerant,3.205581962,Comm_B1,Tolerant_Dominance,28S,Tol1
+Sensitive,44.63747598,Comm_B1,Tolerant_Dominance,28S,Tol1
+Less Sensitive,52.15694205,Comm_B1,Tolerant_Dominance,28S,Tol1
+Tolerant,2.048658765,Comm_B2,Tolerant_Dominance,28S,Tol2
+Sensitive,50.96693699,Comm_B2,Tolerant_Dominance,28S,Tol2
+Less Sensitive,46.98440424,Comm_B2,Tolerant_Dominance,28S,Tol2
+Tolerant,3.66695921,Comm_B3,Tolerant_Dominance,28S,Tol3
+Sensitive,68.1802572,Comm_B3,Tolerant_Dominance,28S,Tol3
+Less Sensitive,28.1527836,Comm_B3,Tolerant_Dominance,28S,Tol3
+Tolerant,2.635778082,Comm_C1,Less Sensitive_Dominance,28S,Les1
+Sensitive,60.76203079,Comm_C1,Less Sensitive_Dominance,28S,Les1
+Less Sensitive,36.60219113,Comm_C1,Less Sensitive_Dominance,28S,Les1
+Tolerant,1.265822785,Comm_C2,Less Sensitive_Dominance,28S,Les2
+Sensitive,50.48280305,Comm_C2,Less Sensitive_Dominance,28S,Les2
+Less Sensitive,48.25137418,Comm_C2,Less Sensitive_Dominance,28S,Les2
+Tolerant,1.51591771,Comm_C3,Less Sensitive_Dominance,28S,Les3
+Sensitive,47.72210091,Comm_C3,Less Sensitive_Dominance,28S,Les3
+Less Sensitive,50.76198138,Comm_C3,Less Sensitive_Dominance,28S,Les3
+Tolerant,23.06361921,Comm_D1,Sensitive_Dominance,28S,Sen1
+Sensitive,65.15078024,Comm_D1,Sensitive_Dominance,28S,Sen1
+Less Sensitive,11.78560055,Comm_D1,Sensitive_Dominance,28S,Sen1
+Tolerant,0.484703955,Comm_D2,Sensitive_Dominance,28S,Sen2
+Sensitive,80.17229215,Comm_D2,Sensitive_Dominance,28S,Sen2
+Less Sensitive,19.3430039,Comm_D2,Sensitive_Dominance,28S,Sen2
+Tolerant,0.264824527,Comm_D3,Sensitive_Dominance,28S,Sen3
+Sensitive,87.41005717,Comm_D3,Sensitive_Dominance,28S,Sen3
+Less Sensitive,12.3251183,Comm_D3,Sensitive_Dominance,28S,Sen3
+Tolerant,42.85714286,Comm_A,Even_Community,28S,Even
+Less Sensitive,28.57142857,Comm_A,Even_Community,28S,Even
+Sensitive,28.57142857,Comm_A,Even_Community,28S,Even
+Tolerant,60,Comm_B,Tolerant_Dominance,28S,Tol
+Less Sensitive,30,Comm_B,Tolerant_Dominance,28S,Tol
+Sensitive,10,Comm_B,Tolerant_Dominance,28S,Tol
+Tolerant,15,Comm_C,Less Sensitive_Dominance,28S,Les
+Less Sensitive,63.75,Comm_C,Less Sensitive_Dominance,28S,Les
+Sensitive,21.25,Comm_C,Less Sensitive_Dominance,28S,Les
+Tolerant,15,Comm_D,Sensitive_Dominance,28S,Sen
+Less Sensitive,38.75,Comm_D,Sensitive_Dominance,28S,Sen
+Sensitive,46.25,Comm_D,Sensitive_Dominance,28S,Sen
+Tolerant,36.86902023,Comm_A1,Even_Community,Shotgun,Even1
+Sensitive,21.28461297,Comm_A1,Even_Community,Shotgun,Even1
+Less Sensitive,18.82445674,Comm_A1,Even_Community,Shotgun,Even1
+Others,23.02191007,Comm_A1,Even_Community,Shotgun,Even1
+Tolerant,38.77290847,Comm_A2,Even_Community,Shotgun,Even2
+Sensitive,21.49319217,Comm_A2,Even_Community,Shotgun,Even2
+Less Sensitive,19.80935494,Comm_A2,Even_Community,Shotgun,Even2
+Others,19.92454442,Comm_A2,Even_Community,Shotgun,Even2
+Tolerant,29.85838427,Comm_A3,Even_Community,Shotgun,Even3
+Sensitive,22.78248337,Comm_A3,Even_Community,Shotgun,Even3
+Less Sensitive,20.12176876,Comm_A3,Even_Community,Shotgun,Even3
+Others,27.23736359,Comm_A3,Even_Community,Shotgun,Even3
+Tolerant,39.23739237,Comm_B1,Tolerant_Dominance,Shotgun,Tol1
+Sensitive,6.086970354,Comm_B1,Tolerant_Dominance,Shotgun,Tol1
+Less Sensitive,37.45546507,Comm_B1,Tolerant_Dominance,Shotgun,Tol1
+Others,17.2201722,Comm_B1,Tolerant_Dominance,Shotgun,Tol1
+Tolerant,42.36349958,Comm_B2,Tolerant_Dominance,Shotgun,Tol2
+Sensitive,5.208512468,Comm_B2,Tolerant_Dominance,Shotgun,Tol2
+Less Sensitive,36.45582545,Comm_B2,Tolerant_Dominance,Shotgun,Tol2
+Others,15.97216251,Comm_B2,Tolerant_Dominance,Shotgun,Tol2
+Tolerant,37.36739627,Comm_B3,Tolerant_Dominance,Shotgun,Tol3
+Sensitive,8.5509825,Comm_B3,Tolerant_Dominance,Shotgun,Tol3
+Less Sensitive,27.74215567,Comm_B3,Tolerant_Dominance,Shotgun,Tol3
+Others,26.33946556,Comm_B3,Tolerant_Dominance,Shotgun,Tol3
+Tolerant,19.04033045,Comm_C1,Less Sensitive_Dominance,Shotgun,Les1
+Sensitive,18.4822276,Comm_C1,Less Sensitive_Dominance,Shotgun,Les1
+Less Sensitive,43.72919647,Comm_C1,Less Sensitive_Dominance,Shotgun,Les1
+Others,18.74824549,Comm_C1,Less Sensitive_Dominance,Shotgun,Les1
+Tolerant,8.229465532,Comm_C2,Less Sensitive_Dominance,Shotgun,Les2
+Sensitive,20.65127071,Comm_C2,Less Sensitive_Dominance,Shotgun,Les2
+Less Sensitive,50.13561608,Comm_C2,Less Sensitive_Dominance,Shotgun,Les2
+Others,20.98364768,Comm_C2,Less Sensitive_Dominance,Shotgun,Les2
+Tolerant,6.306831223,Comm_C3,Less Sensitive_Dominance,Shotgun,Les3
+Sensitive,12.53950598,Comm_C3,Less Sensitive_Dominance,Shotgun,Les3
+Less Sensitive,63.65920982,Comm_C3,Less Sensitive_Dominance,Shotgun,Les3
+Others,17.49445298,Comm_C3,Less Sensitive_Dominance,Shotgun,Les3
+Tolerant,6.567965962,Comm_D1,Sensitive_Dominance,Shotgun,Sen1
+Sensitive,19.49835416,Comm_D1,Sensitive_Dominance,Shotgun,Sen1
+Less Sensitive,31.53954234,Comm_D1,Sensitive_Dominance,Shotgun,Sen1
+Others,42.39413753,Comm_D1,Sensitive_Dominance,Shotgun,Sen1
+Tolerant,7.103778497,Comm_D2,Sensitive_Dominance,Shotgun,Sen2
+Sensitive,21.17605387,Comm_D2,Sensitive_Dominance,Shotgun,Sen2
+Less Sensitive,29.22509666,Comm_D2,Sensitive_Dominance,Shotgun,Sen2
+Others,42.49507097,Comm_D2,Sensitive_Dominance,Shotgun,Sen2
+Tolerant,7.628503347,Comm_D3,Sensitive_Dominance,Shotgun,Sen3
+Sensitive,23.48802905,Comm_D3,Sensitive_Dominance,Shotgun,Sen3
+Less Sensitive,24.97730625,Comm_D3,Sensitive_Dominance,Shotgun,Sen3
+Others,43.90616135,Comm_D3,Sensitive_Dominance,Shotgun,Sen3
+Tolerant,42.85714286,Comm_A,Even_Community,Shotgun,Even
+Less Sensitive,28.57142857,Comm_A,Even_Community,Shotgun,Even
+Sensitive,28.57142857,Comm_A,Even_Community,Shotgun,Even
+Tolerant,60,Comm_B,Tolerant_Dominance,Shotgun,Tol
+Less Sensitive,30,Comm_B,Tolerant_Dominance,Shotgun,Tol
+Sensitive,10,Comm_B,Tolerant_Dominance,Shotgun,Tol
+Tolerant,15,Comm_C,Less Sensitive_Dominance,Shotgun,Les
+Less Sensitive,63.75,Comm_C,Less Sensitive_Dominance,Shotgun,Les
+Sensitive,21.25,Comm_C,Less Sensitive_Dominance,Shotgun,Les
+Tolerant,15,Comm_D,Sensitive_Dominance,Shotgun,Sen
+Less Sensitive,38.75,Comm_D,Sensitive_Dominance,Shotgun,Sen
+Sensitive,46.25,Comm_D,Sensitive_Dominance,Shotgun,Sen
