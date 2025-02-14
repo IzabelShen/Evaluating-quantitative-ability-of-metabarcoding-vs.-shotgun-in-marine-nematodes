@@ -1,0 +1,43 @@
+Grouping,Relative,Type,Sample,Sequence,Mock
+Others,0.599910403,Tolerant_Dominance,Tol1,18S,DNA input
+Others,0.010593702,Tolerant_Dominance,Tol2,18S,DNA input
+Others,0.139580263,Tolerant_Dominance,Tol3,18S,DNA input
+Others,0.230229293,Less Sensitive_Dominance,Les1,18S,DNA input
+Others,0.60168218,Less Sensitive_Dominance,Les2,18S,DNA input
+Others,1.690665703,Less Sensitive_Dominance,Les3,18S,DNA input
+Others,0.004500462,Sensitive_Dominance,Sen1,18S,DNA input
+Others,0.230235,Sensitive_Dominance,Sen2,18S,DNA input
+Others,0.825367601,Sensitive_Dominance,Sen3,18S,DNA input
+Others,11.98741273,Tolerant_Dominance,Tol1,Shotgun,DNA input
+Others,11.69330848,Tolerant_Dominance,Tol2,Shotgun,DNA input
+Others,11.52214892,Tolerant_Dominance,Tol3,Shotgun,DNA input
+Others,23.15562736,Less Sensitive_Dominance,Les1,Shotgun,DNA input
+Others,17.14958872,Less Sensitive_Dominance,Les2,Shotgun,DNA input
+Others,18.26603673,Less Sensitive_Dominance,Les3,Shotgun,DNA input
+Others,24.36109644,Sensitive_Dominance,Sen1,Shotgun,DNA input
+Others,33.10562969,Sensitive_Dominance,Sen2,Shotgun,DNA input
+Others,41.08898487,Sensitive_Dominance,Sen3,Shotgun,DNA input
+Others,0.880249546,Even1,Even_Community,18S,Nematode specimens
+Others,2.729140609,Even2,Even_Community,18S,Nematode specimens
+Others,2.104110922,Even3,Even_Community,18S,Nematode specimens
+Others,0.668001465,Tol1,Tolerant_Dominance,18S,Nematode specimens
+Others,0.235674723,Tol2,Tolerant_Dominance,18S,Nematode specimens
+Others,0.333105037,Tol3,Tolerant_Dominance,18S,Nematode specimens
+Others,1.076289842,Les1,Less Sensitive_Dominance,18S,Nematode specimens
+Others,0.075978876,Les2,Less Sensitive_Dominance,18S,Nematode specimens
+Others,1.25166745,Les3,Less Sensitive_Dominance,18S,Nematode specimens
+Others,18.5432918,Sen1,Sensitive_Dominance,18S,Nematode specimens
+Others,0.049182389,Sen2,Sensitive_Dominance,18S,Nematode specimens
+Others,0.143196908,Sen3,Sensitive_Dominance,18S,Nematode specimens
+Others,23.02191007,Even1,Even_Community,Shotgun,Nematode specimens
+Others,19.92454442,Even2,Even_Community,Shotgun,Nematode specimens
+Others,27.23736359,Even3,Even_Community,Shotgun,Nematode specimens
+Others,17.2201722,Tol1,Tolerant_Dominance,Shotgun,Nematode specimens
+Others,15.97216251,Tol2,Tolerant_Dominance,Shotgun,Nematode specimens
+Others,26.33946556,Les1,Tolerant_Dominance,Shotgun,Nematode specimens
+Others,18.74824549,Les2,Less Sensitive_Dominance,Shotgun,Nematode specimens
+Others,20.98364768,Les3,Less Sensitive_Dominance,Shotgun,Nematode specimens
+Others,17.49445298,Sen1,Less Sensitive_Dominance,Shotgun,Nematode specimens
+Others,42.39413753,Sen2,Sensitive_Dominance,Shotgun,Nematode specimens
+Others,42.49507097,Sen3,Sensitive_Dominance,Shotgun,Nematode specimens
+Others,43.90616135,,Sensitive_Dominance,Shotgun,Nematode specimens
