@@ -4,8 +4,5 @@ A study about Mock communities comprising of nematoda from soft sediment of the 
 
 Corresponding author: Dandan Izabel-Shen, Helmholtz Institute for Functional Marine Biodiversity at the University of Oldenburg(HIFMB) ; email: dandan.shen@hifmb.de
 
-A preprint of this work has been found: 
-The script and computing notes provided in this Github repository are also published in Zenodo: 
-
 ## 18S and 28S metabarcoding ##
 ## shotgun sequencing ########
