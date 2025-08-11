@@ -31,392 +31,59 @@ library("phyloseq")
 library("dplyr")
 library("ggthemes") # use themes to clean up the data visualizations 
 library("RColorBrewer") # for multiple color palettes
-
-####################
-#####Plot for PCoA
-####################
-
-#####################
-###18S DNA input#####
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/DNA_input")
-RelaAbun <-read.csv("./RelAbun18S.csv",header=T, row.names=1) #Sample in row, ASV in colum
-bc.d <-vegdist(t(RelaAbun[,1:9]), k=2, method="bray")
-bc.pcoa=cmdscale(bc.d, eig=TRUE)
-bc.pcoa
-
-#percent explained by the first and second axis
-ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
-ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
-# look at the output
-ax1.v.bc *100
-ax2.v.bc *100
-
-# or
-percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
-#'round' function will round our numbers to the one significant digit to the right of the decimal point
-#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
-#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
-#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
-#"trim=True" is trim the white space from the front strings
-pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
-#library("glue") mased from dplyr
-library("dplyr")
-library("glue")
-labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
-  
-Mymeta =data.frame(Type=c("Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
-PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
-PCoA$Type<-factor(PCoA$Type, levels=c("Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
-find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
-hulls <-ddply(PCoA, "Type",find_hull) 
-
-p1 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
-geom_point(aes(shape=Type), size=2.5) + 
-geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
-scale_shape_manual(values=c(15,16,17))+
-theme_bw()+ 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
-theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
-labs(title="18S_DNA input", x=labs[1], y=labs[2]) + 
-theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
-theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
-theme(legend.text=element_text(size=13,family="serif")) + 
-theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
-theme(legend.background=element_rect(fill=NA)) + 
-theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
-theme(legend.title=element_text(color="black", size=12,family='serif')) + 
-guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
-guides(shape=guide_legend(override.aes=list(size=3.6))) + 
-theme(legend.key.size=unit("0.5","cm")) +
-theme(legend.position="none")
+library("readxl") # to read excel files
 
 
-#####################
-####28S DNA input####
-setwd("/Users/Dandan/Desktop//NEWMockManuscript/28SMockResults/DNAinput")
-RelaAbun <-read.csv("./RelAbun28S_DNA.csv", header=T, row.names=1) #Sample in row, ASV in colum
-#nmds.otu <-nmds.otu <-metaMDS(t(RelaAbun), distance="horn", trymax=200)
-#nmds.otu$stress # 0.0524833
-###NOTE : NMDS plot does not work on this dataset, as NMDS require non-linear 
-######Using PCoA metric instead to plot ######
 
-bc.d <-vegdist(t(RelaAbun), k=2, method="bray")
-bc.pcoa=cmdscale(bc.d, eig=TRUE)
-bc.pcoa
+setwd("./inputfiles/")
+#############Bray-Curtis dissimilarity matrix on mock community composition estimated from relative read abundance vs. expected proportions ######
+Dists_joins <-read_excel("Dists_joins.xlsx")
 
-#percent explained by the first and second axis
-ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
-ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
-# look at the output
-ax1.v.bc *100
-ax2.v.bc *100
+set.seed(123) # Pick any number you like to  set seed to make jittered points consistent (reproducible)
+my_comparisons <- list(
+  c("18S", "28S"),
+  c("28S", "Shotgun"),
+  c("18S", "Shotgun"))
 
-# or
-percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
-#'round' function will round our numbers to the one significant digit to the right of the decimal point
-#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
-#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
-#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
-#"trim=True" is trim the white space from the front strings
-pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
-#library("glue") mased from dplyr
-#library("dplyr")
-library("glue")
-labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
-  
-Mymeta =data.frame(Type=c("Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
-PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
-PCoA$Type<-factor(PCoA$Type, levels=c("Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
-find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
-hulls <-ddply(PCoA, "Type",find_hull) 
-
-p2 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
-geom_point(aes(shape=Type), size=2.5) + 
-geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
-scale_shape_manual(values=c(15,16,17))+
-theme_bw()+ 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
-theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
-labs(title="28S_DNA input", x=labs[1], y=labs[2]) + 
-theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
-theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
-theme(legend.text=element_text(size=13,family="serif")) + 
-theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
-theme(legend.background=element_rect(fill=NA)) + 
-theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
-theme(legend.title=element_text(color="black", size=12,family='serif')) + 
-guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
-guides(shape=guide_legend(override.aes=list(size=3.6))) + 
-theme(legend.key.size=unit("0.5","cm")) +
-theme(legend.position="none")
-
-######################
-###Shotgun DNA input###
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockDNA")
-RelaAbun <-read.csv("./RelaContigs_DNA.csv",header=T, row.names=1) #Sample in row, ASV in colum
-bc.d <-vegdist(t(RelaAbun[,1:9]), k=2, method="bray")
-bc.pcoa=cmdscale(bc.d, eig=TRUE)
-bc.pcoa
-
-#percent explained by the first and second axis
-ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
-ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
-# look at the output
-ax1.v.bc *100
-ax2.v.bc *100
-
-# or
-percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
-#'round' function will round our numbers to the one significant digit to the right of the decimal point
-#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
-#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
-#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
-#"trim=True" is trim the white space from the front strings
-pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
-#library("glue") mased from dplyr
-#library("dplyr")
-library("glue")
-labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
-  
-Mymeta =data.frame(Type=c("Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
-PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
-PCoA$Type<-factor(PCoA$Type, levels=c("Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
-find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
-hulls <-ddply(PCoA, "Type",find_hull) 
-
-p3 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
-geom_point(aes(shape=Type), size=2.5) + 
-geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
-scale_shape_manual(values=c(15,16,17))+
-theme_bw()+ 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
-theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
-labs(title="Shotgun_DNA input", x=labs[1], y=labs[2]) + 
-theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
-theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
-theme(legend.text=element_text(size=13,family="serif")) + 
-theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
-theme(legend.background=element_rect(fill=NA)) + 
-theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
-theme(legend.title=element_text(color="black", size=12,family='serif')) + 
-guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
-guides(shape=guide_legend(override.aes=list(size=3.6))) + 
-theme(legend.key.size=unit("0.5","cm")) +
-theme(legend.position="none")
-
-Figure3A <- ggarrange(p1, p2, p3, ncol = 1, nrow = 3,labels =c('A'))
-#pa<-annotate_figure(figure,
-#                top = text_grob("28S_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
-#                left = text_grob("Relative abundance %", color = "black",
-#                                 family = "serif", size = 13, rot=90),
-#               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
-pdf("/Users/dandanizabel-shen/Desktop/NematodaPaper/Figure3A_PCoA_DNAinput.pdf", width=4, height=10)
-Figure3A
-dev.off()
-
-#####################################
-######PcoA Individual nematodes######
-####18S individual nematodes
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/MockIndiv/")
-RelaAbun_Indiv <-read.csv("./RelAbun18S_Indiv.csv",header=T, row.names=1)
-bc.d <-vegdist(t(RelaAbun_Indiv[,1:12]), k=2, method="bray")
-bc.pcoa=cmdscale(bc.d, eig=TRUE)
-bc.pcoa
-
-#percent explained by the first and second axis
-ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
-ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
-# look at the output
-ax1.v.bc *100
-ax2.v.bc *100
-
-# or
-percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
-#'round' function will round our numbers to the one significant digit to the right of the decimal point
-#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
-#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
-#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
-#"trim=True" is trim the white space from the front strings
-pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
-#library("glue") mased from dplyr
-#library("dplyr")
-library("glue")
-labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
-
-Mymeta =data.frame(Type=c("Even_Community","Even_Community","Even_Community","Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
-PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
-PCoA$Type<-factor(PCoA$Type, levels=c("Even_Community","Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
-find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
-hulls <-ddply(PCoA, "Type",find_hull) 
-
-p4 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
-geom_point(aes(shape=Type), size=2.5) + 
-geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
-scale_shape_manual(values=c(1,15,16,17))+
-theme_bw()+ 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
-theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
-labs(title="18S_nematode specimens", x=labs[1], y=labs[2]) + 
-theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
-theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
-theme(legend.text=element_text(size=13,family="serif")) + 
-theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
-theme(legend.background=element_rect(fill=NA)) + 
-theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
-theme(legend.title=element_text(color="black", size=12,family='serif')) + 
-guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
-guides(shape=guide_legend(override.aes=list(size=3.6))) + 
-theme(legend.key.size=unit("0.5","cm")) +
-theme(legend.position="none")
-
-#############################
-#####28S individual nematodes
-#############################
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/28SMockResults/MockIndiv")
-RelaAbun_Indiv <-read.csv("./RelAbun28S_Indiv.csv",header=T, row.names=1) #Sample in column, ASV in row
-#### PCoA plot #####
-bc.d <-vegdist(t(RelaAbun_Indiv[,1:12]), k=2, method="bray")
-bc.pcoa=cmdscale(bc.d, eig=TRUE)
-bc.pcoa
-
-#percent explained by the first and second axis
-ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
-ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
-# look at the output
-ax1.v.bc *100
-ax2.v.bc *100
-
-# or
-percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
-#'round' function will round our numbers to the one significant digit to the right of the decimal point
-#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
-#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
-#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
-#"trim=True" is trim the white space from the front strings
-pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
-#library("glue") mased from dplyr
-labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
-  
-Mymeta =data.frame(Type=c("Even_Community","Even_Community","Even_Community","Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
-PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
-PCoA$Type<-factor(PCoA$Type, levels=c("Even_Community","Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
-find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
-hulls <-ddply(PCoA, "Type",find_hull) 
-
-p5 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
-geom_point(aes(shape=Type), size=2.5) + 
-geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
-scale_shape_manual(values=c(1,15,16,17))+
-theme_bw()+ 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
-theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
-labs(title="28S_nematode specimens", x=labs[1], y=labs[2]) + 
-theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
-theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
-theme(legend.text=element_text(size=13,family="serif")) + 
-theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
-theme(legend.background=element_rect(fill=NA)) + 
-theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
-theme(legend.title=element_text(color="black", size=12,family='serif')) + 
-guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
-guides(shape=guide_legend(override.aes=list(size=3.6))) + 
-theme(legend.key.size=unit("0.5","cm")) +
-theme(legend.position="none")
-
-####################################
-######Shotgun individual nematodes###
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/ShotgunMockResults/ShotgunMockIndiv")
-RelaAbun <-read.csv("./RelAbun_Contigs_Indiv.csv", header=T, row.names=1)
-bc.d <-vegdist(t(RelaAbun[,1:12]), k=2, method="bray")
-bc.pcoa=cmdscale(bc.d, eig=TRUE)
-bc.pcoa
-
-#percent explained by the first and second axis
-ax1.v.bc=bc.pcoa$eig[1]/sum(bc.pcoa$eig)
-ax2.v.bc=bc.pcoa$eig[2]/sum(bc.pcoa$eig)
-# look at the output
-ax1.v.bc *100
-ax2.v.bc *100
-
-# or
-percent_explained <- 100 * bc.pcoa$eig /sum(bc.pcoa$eig)
-#'round' function will round our numbers to the one significant digit to the right of the decimal point
-#If there is 0 after the decimal point it will be truncated, and if we want that decimal point in there, 
-#use 'format' function, so wrap the "round" function in the "format" function, as nesting fucntion
-#and the argument is "nsmall=1" in 'format'allows to ensure at least there is one value to the right of decimal point.
-#"trim=True" is trim the white space from the front strings
-pretty_pe <-format(round(percent_explained[1:2], digits=1), nsmall=1,trim=TRUE)
-#library("glue") mased from dplyr
-#library("dplyr")
-library("glue")
-labs<- c(glue("PCo 1 ({pretty_pe[1]}%)"), glue("PCo 2 ({pretty_pe[2]}%)"))
-  
-Mymeta =data.frame(Type=c("Even_Community","Even_Community","Even_Community","Tolerant_Dominance","Tolerant_Dominance","Tolerant_Dominance", "Less sensitive_Dominance", "Less sensitive_Dominance","Less sensitive_Dominance","Sensitive_Dominance", "Sensitive_Dominance","Sensitive_Dominance"))
-PCoA= data.frame(PCoA1=bc.pcoa$points[,1], PCoA2=bc.pcoa$points[,2], Type=Mymeta$Type)
-PCoA$Type<-factor(PCoA$Type, levels=c("Even_Community","Tolerant_Dominance","Less sensitive_Dominance","Sensitive_Dominance"))
-find_hull <-function(PCoA) PCoA[chull(PCoA$PCoA1,PCoA$PCoA2),]
-hulls <-ddply(PCoA, "Type",find_hull) 
-
-p6 <-ggplot(data=PCoA, aes(PCoA1, PCoA2, shape=Type)) + 
-geom_point(aes(shape=Type), size=2.5) + 
-geom_polygon(data = hulls, aes(x=PCoA1, y=PCoA2), alpha=0.3) +
-scale_shape_manual(values=c(1,15,16,17))+
-theme_bw()+ 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank())+ 
-theme(panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank()) + 
-labs(title="Shotgun_nematode specimens", x=labs[1], y=labs[2]) + 
-theme(axis.title.y=element_text(colour = 'black',size = 12,family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 12, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 12,family='serif' )) + 
-theme(axis.text.x=element_text(colour = 'black', size = 12, family='serif')) + 
-theme(legend.text=element_text(size=13,family="serif")) + 
-theme(legend.key=element_rect(fill="transparent", colour=NA)) + 
-theme(legend.background=element_rect(fill=NA)) + 
-theme(plot.title=element_text(colour= 'black', size=13, family="serif",face='bold')) + 
-theme(legend.title=element_text(color="black", size=12,family='serif')) + 
-guides(color=guide_legend(override.aes=list(shape=15, size=2))) + 
-guides(shape=guide_legend(override.aes=list(size=3.6))) + 
-theme(legend.key.size=unit("0.5","cm")) +
-theme(legend.position="right")
-
-Figure3B <- ggarrange(p4, p5, p6, ncol = 1, nrow = 3,labels =c('B'))
-#pa<-annotate_figure(figure,
-#                top = text_grob("28S_individual namatodes", color = "black", family = "serif", size = 14, face="bold"),
-#                left = text_grob("Relative abundance %", color = "black",
-#                                 family = "serif", size = 13, rot=90),
-#               bottom =text_grob("Number of individuals", color="black", size=13, family="serif"))
-pdf("/Users/dandanizabel-shen/Desktop/Figure3B_PCoA_Individual.pdf", width=4, height=10)
-Figure3B
-dev.off()
-
-
-#legend <-cowplot::get_legend(p6) #change the legend position to right
-#l <-as_ggplot(legend)
-Fig3<- ggarrange(Figure3A, Figure3B, ncol = 2, nrow = 1) #adjust plot space 
-                        #does the plot have a common legend
-#add titles and labels to the multi-panel graph
-#annotate_figure(Fig1, fig.lab = "Figure 1", fig.lab.face = "bold")
-pdf("/Users/dandanizabel-shen/Desktop/Figure3.pdf", width=9, height=11)
-Fig3
-dev.off()
-
+Dists_joins$Sequence <-factor(Dists_joins$Sequence, levels=c("18S","28S","Shotgun"))
+p20 <- ggplot(Dists_joins, aes(y = Distance, x = Sequence, fill = Sequence, color = Sequence)) + 
+    geom_boxplot(alpha = 0.5, outlier.shape = NA, width = 0.45) +
+    geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.6),
+                size = 2.5, shape = 21, aes(fill = Sequence, color = Sequence)) +
+    scale_fill_manual(values = c("18S" = "firebrick2", "28S" = "gold1", "Shotgun" = "deepskyblue2")) +
+    scale_color_manual(values = c("18S" = "firebrick2", "28S" = "gold1", "Shotgun" = "deepskyblue2")) +
+    theme(panel.grid.minor.y = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.background = element_rect(fill = 'white', colour = 'black'),
+          axis.text.x = element_text(colour = 'black', size = 10, family = 'serif'),
+          axis.text.y = element_text(colour = 'black', size = 10, family = 'serif'),
+          axis.title.x = element_text(colour = 'black', size = 11, family = 'serif', face = 'bold'),
+          axis.title.y = element_text(colour = 'black', size = 11, family = 'serif', face = 'bold'),
+          legend.title = element_text(size = 10, family = 'serif'),
+          legend.text = element_text(size = 10, family = 'serif'),
+          axis.ticks.y = element_blank(),
+          plot.title = element_text(size = 12, colour = 'black', face = 'bold', family = 'serif'),
+          legend.position = "right") +
+    labs(title = "Observed reads vs. expected proportions", y = "Bray-Curtis dissimilarity\n based on genus level", x = "Sequence") +
+    geom_signif(comparisons = my_comparisons,
+                step_increase = 0.1,
+                map_signif_level = TRUE,
+                test = wilcox.test,
+                color = 'black',
+                textsize = 2.8,
+                family = 'serif') +
+    facet_wrap(~ MockType) + 
+    guides(fill = "none", color = "none") +
+    theme(strip.text=element_text(size=11, family='serif')) + 
+theme(panel.margin=unit(0.18,"line")) + 
+theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm")))
+ggsave("Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 
 ###########################################
 #####Relative read data vs. DNA input######
 ###########################################
 
 ######General ecological group proportion#####
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/Refigures/Figure4")
 Combined <-read.csv("./CombinedALL.csv", header=T)
 
 #remove the text angle=30, hjust=1
@@ -465,7 +132,6 @@ dev.off()
 #####Taxonomic group at the genus level ######
 ##############################################
 ##adjusted Combined table##
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/Refigures/Figure3")
 CombinedTaxa <-read.csv("./CombinedTaxaALL.csv", header=T)
 
 #remove the text angle=30, hjust=1
@@ -522,7 +188,6 @@ dev.off()
 #########################################
 
 ######General ecological group proportion#####
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/Refigures/Figure5")
 CombinedALL_Indiv <-read.csv("./CombinedALL_Indiv.csv", header=T)
 ## have been merged Paracanthoncus with closely related and Microlaimus with closely related
 
@@ -626,9 +291,7 @@ dev.off()
 ######################################################
 ###########Calculate pearson correlation##############
 ######################################################
-
 ###18S DNA input
-setwd("/Users/Dandan/Desktop/NEWMockManuscript/18SMockResults/DNA_input")
 Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
 Sabal_18S <- cor.test(Sabalinear$Relative, Sabalinear$DNAcon)
 Sabal_18S
