@@ -36,6 +36,9 @@ library("readxl") # to read excel files
 
 
 setwd("./inputfiles/")
+
+##############Figure 3####
+######################
 #############Bray-Curtis dissimilarity matrix on mock community composition estimated from relative read abundance vs. expected proportions ######
 Dists_joins <-read_excel("Dists_joins.xlsx")
 
@@ -84,6 +87,7 @@ ggsave("Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 ###########################################
 
 ######General ecological group proportion#####
+######## Figure 4 #########
 Combined <-read.csv("./CombinedALL.csv", header=T)
 
 #remove the text angle=30, hjust=1
@@ -175,7 +179,7 @@ pdf("./Figure4B_DNAEcoGroup.pdf", width=7, height=6)
 p8
 dev.off()
 
-##Combine Figure2 A and B
+##Combine Figure4 A and B
 Fig4 <- ggarrange(p7,p8,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
 Fig4<-annotate_figure(Fig4,top = text_grob("Mock communities with DNA input", color = "black", family = "serif", size = 11, face="bold"))
 pdf("./Figure4Composition_DNAInput.pdf", width=7.3, height=7.5)
@@ -186,7 +190,7 @@ dev.off()
 #########################################
 #####Individual nematodes######
 #########################################
-
+###### Figure 5 #######
 ######General ecological group proportion#####
 CombinedALL_Indiv <-read.csv("./CombinedALL_Indiv.csv", header=T)
 ## have been merged Paracanthoncus with closely related and Microlaimus with closely related
@@ -291,6 +295,7 @@ dev.off()
 ######################################################
 ###########Calculate pearson correlation##############
 ######################################################
+########
 ###18S DNA input
 Sabalinear <-read.csv("./Sabalinear.csv", header=T, row.names=1)
 Sabal_18S <- cor.test(Sabalinear$Relative, Sabalinear$DNAcon)
