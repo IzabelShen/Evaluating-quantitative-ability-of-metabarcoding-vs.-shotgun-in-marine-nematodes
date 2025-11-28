@@ -1,8 +1,8 @@
-# Evaluating quantitative ability of metabarcoding and shotgun using mock communities comprising marine nematodes 
+# Evaluating Quantitative Performance of Metabarcoding and Shotgun Sequencing Using Marine Nematode Mock Communities
 
-A study about Mock communities comprising of nematoda from soft sediment of the Baltic Sea and are to compare how well the relative read proportion of nematoda derived from metabarcoding and shotgun sequencing data are in comparsion with the original proportion of species in the mock communities. 
+This repository contains data, scripts, and documentation for a study evaluating how well amplicon-based metabarcoding and shotgun metagenomic sequencing reflect true community composition in marine nematode assemblages. 
+
+Mock communities were assembled using marine nematodes collected from soft sediment in the Baltic Ssea. The goal of this study is to assess the quantitative performance of two commonly used sequencing approaches: metabarcoding and shotgun metagenomic sequencing. 
 
 Corresponding author: Dandan Izabel-Shen, Helmholtz Institute for Functional Marine Biodiversity at the University of Oldenburg(HIFMB) ; email: dandan.shen@hifmb.de
 
-## 18S and 28S metabarcoding ##
-## shotgun sequencing ########
