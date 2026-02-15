@@ -545,13 +545,16 @@ coe1$Sequences <-factor(coe1$Sequences, levels=c("Shotgun","28S","18S"))
 coe2$Sequences <-factor(coe2$Sequences, levels=c("Shotgun","28S","18S"))
 
 ####################################
+################# Figure 7 #######
+##################################
+
 SupplementaryTables <- 
   read_excel("SupplementaryTables.xlsx",  sheet = "TableS6", skip = 1)
 
 facet_labels <-
   c(
-    "DNA input" = "Mock communities with DNA input",
-    "Individual nematodes" = "Mock communities with nematode specimens"
+    "DNA input" = "A) Mock communities with DNA input",
+    "Individual nematodes" = "B) Mock communities with nematode specimens"
   )
 
 nematode_order <- c(
@@ -596,7 +599,7 @@ cor_coef_plot <-
     labeller = labeller(Type = facet_labels),
     scales = "free"
   ) +
-  theme(plot.title=element_text(size=12.5, colour='black', family='serif', face="bold")) +
+  theme(plot.title=element_text(size=13, colour='black', family='serif', face="bold")) +
   scale_x_continuous(breaks = c(-1,0,1))+
   scale_y_discrete()+
   scale_color_manual(
@@ -606,7 +609,7 @@ cor_coef_plot <-
   theme(
     axis.text.y.left = element_text(face  = "italic", family='serif', size=12),
     strip.background = element_blank(),
-    strip.text = element_text(face = "bold", hjust = 0, family='serif', size=11),
+    strip.text = element_text(face = "bold",  family='serif', size=12),
     axis.title.x = element_text(size=12, family='serif', face="bold"),
     axis.title.y = element_text(size=12, family='serif', face="bold"),
     panel.grid.minor  = element_blank()) +
@@ -617,8 +620,8 @@ cor_coef_plot <-
 ggsave(
   filename = "Figure7 Coefficient_plot.pdf",
   plot = cor_coef_plot,
-  width = 158,
-  height = (158 * 0.635) * 2,
+  width = 165,
+  height = (165 * 0.632) * 2,
   units = "mm",
   device = cairo_pdf
 )
