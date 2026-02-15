@@ -3,7 +3,7 @@
 ### Data from 
 ### "Evlauating the quantiative ability of metabarcoding and shotgun in marine nematodes"
 ### 
-###Prepared 13 February 2025
+###Prepared 1 December 2025
 ### Author: Dandan Izabel-Shen, HIFMB; dand.shen <at> hifmb.de
 ###########################
 
@@ -16,7 +16,6 @@
 
 ##############################
 ####Packages to load #####
-##### 18S#####################
 library("vegan")
 library("ape")
 library("glue")
@@ -32,12 +31,11 @@ library("dplyr")
 library("ggthemes") # use themes to clean up the data visualizations 
 library("RColorBrewer") # for multiple color palettes
 library("readxl") # to read excel files
-
-
+library("tidyverse") # to import, transform, visualize, and summarize data
 
 setwd("./inputfiles/")
 
-##############Figure 3####
+############## Figure 4#############
 ######################
 #############Bray-Curtis dissimilarity matrix on mock community composition estimated from relative read abundance vs. expected proportions ######
 Dists_joins <-read_excel("Dists_joins.xlsx")
@@ -80,14 +78,14 @@ p20 <- ggplot(Dists_joins, aes(y = Distance, x = Sequence, fill = Sequence, colo
     theme(strip.text=element_text(size=11, family='serif')) + 
 theme(panel.margin=unit(0.18,"line")) + 
 theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm")))
-ggsave("Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
+ggsave("Figure 4_Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 
 ###########################################
 #####Relative read data vs. DNA input######
 ###########################################
 
 ######General ecological group proportion#####
-######## Figure 4 #########
+######## Figure 5 #########
 Combined <-read.csv("./CombinedALL.csv", header=T)
 
 #remove the text angle=30, hjust=1
@@ -128,9 +126,9 @@ theme(panel.margin=unit(0.18,"line")) +
 theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
 theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
 
-pdf("./Figure4A_DNAEcoGroup.pdf", width=7, height=6)
-p7
-dev.off()
+#pdf("./Figure5A_DNAEcoGroup.pdf", width=7, height=6)
+#p7
+#dev.off()
 
 #############################################
 #####Taxonomic group at the genus level ######
@@ -175,22 +173,22 @@ theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) +
 theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
 
 ##visualize plot##
-pdf("./Figure4B_DNAEcoGroup.pdf", width=7, height=6)
+pdf("./Figure5B_DNAEcoGroup.pdf", width=7, height=6)
 p8
 dev.off()
 
 ##Combine Figure4 A and B
-Fig4 <- ggarrange(p7,p8,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
-Fig4<-annotate_figure(Fig4,top = text_grob("Mock communities with DNA input", color = "black", family = "serif", size = 11, face="bold"))
+Fig5 <- ggarrange(p7,p8,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
+Fig5<-annotate_figure(Fig5,top = text_grob("Mock communities with DNA input", color = "black", family = "serif", size = 11, face="bold"))
 pdf("./Figure4Composition_DNAInput.pdf", width=7.3, height=7.5)
-Fig4
+Fig5
 dev.off()
 
 
 #########################################
 #####Individual nematodes######
 #########################################
-###### Figure 5 #######
+###### Figure 6 #######
 ######General ecological group proportion#####
 CombinedALL_Indiv <-read.csv("./CombinedALL_Indiv.csv", header=T)
 ## have been merged Paracanthoncus with closely related and Microlaimus with closely related
@@ -231,11 +229,6 @@ theme(strip.background=element_rect(size=1)) +
 theme(panel.margin=unit(0.18,"line")) + 
 theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
 theme(plot.margin=margin(0.03,0,0.05,0.05,"cm")) 
-
-##visualize plot##
-pdf("./Figure5A_IndiEcoGroup.pdf", width=8.2, height=6.2)
-p9
-dev.off()
 
 
 ############################################
@@ -284,11 +277,11 @@ pdf("./Figure5B_IndiEcoGroup.pdf", width=8.2, height=6.2)
 p10
 dev.off()
 
-Fig5<- ggarrange(p9,p10,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
-Fig5<-annotate_figure(Fig5,top = text_grob("Mock communities with nematode specimens", color = "black", family = "serif", size = 11, face="bold"))
+Fig6<- ggarrange(p9,p10,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
+Fig6<-annotate_figure(Fig6,top = text_grob("Mock communities with nematode specimens", color = "black", family = "serif", size = 11, face="bold"))
 
-pdf("./Figure5Composition_Indiv.pdf", width=8.5, height=7.5)
-Fig5
+pdf("./Figure6Composition_Indiv.pdf", width=8.5, height=7.5)
+Fig6
 dev.off()
 
 
@@ -551,63 +544,84 @@ coe2$Nematoda <-factor(coe1$Nematoda, levels=c("Desmolaimus","Axonolaimus","Dapt
 coe1$Sequences <-factor(coe1$Sequences, levels=c("Shotgun","28S","18S"))
 coe2$Sequences <-factor(coe2$Sequences, levels=c("Shotgun","28S","18S"))
 
+####################################
+SupplementaryTables <- 
+  read_excel("SupplementaryTables.xlsx",  sheet = "TableS6", skip = 1)
 
-## Figure 6 Mock with DNA input
-############################################ plot the surface samples #######################################
-p11 <-ggplot(coe1, aes(Nematoda, Coefficient,colour=Sequences,order=as.numeric(Nematoda))) + 
-geom_hline(yintercept=0, colour=gray (1/2), lty=2)  + 
-scale_color_manual(values=c("18S"="firebrick2","28S"="gold1","Shotgun"="deepskyblue2"))+ 
-geom_linerange(aes(x=Nematoda, ymin=Coefficient - SE*interval1, ymax=Coefficient+SE*interval1), lwd=1, position= position_dodge(width=1/2)) +
-geom_pointrange(aes(x=Nematoda, ymin=Coefficient-SE*interval2, ymax=Coefficient+SE*interval2), lwd=1/2, position= position_dodge(width=1/2), shape=21, fill="WHITE") +  
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
-theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
-theme(panel.background =element_rect(fil="white", color="black")) + 
-theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif',face='italic')) + 
-theme(axis.title.x=element_blank()) + 
-theme(axis.ticks.x = element_blank()) + 
-theme(axis.title.y=element_blank()) + 
-theme(plot.title=element_text(size=11, colour='black', family='serif', face="bold")) + 
-theme(legend.title=element_text(size=10, family='serif')) +  
-theme(legend.text=element_text(size=10, family='serif')) + 
-labs(title="Mock communities with DNA input") +
-theme(legend.key.size=unit("0.34","cm")) + 
-guides(color = guide_legend(reverse=TRUE)) +
-theme(legend.position="none") +
-theme(legend.key = element_rect(colour = "white")) +
-coord_flip() 
+facet_labels <-
+  c(
+    "DNA input" = "Mock communities with DNA input",
+    "Individual nematodes" = "Mock communities with nematode specimens"
+  )
 
+nematode_order <- c(
+  "Sabatieria",
+  "Halomonhystera",
+  "Leptolaimus",
+  "Paracanthonchus",
+  "Microlaimus",
+  "Daptonema",
+  "Axonolaimus",
+  "Desmolaimus"
+)
+nematode_order_rev <- rev(nematode_order)
 
-## Figure 6 Mock with individual nematodes
-############################ plot the cold intermediate layer samles ####################################################
-p12 <-ggplot(coe2, aes(Nematoda, Coefficient,colour=Sequences,order=as.numeric(Nematoda))) + 
-geom_hline(yintercept=0, colour=gray (1/2), lty=2)  + 
-scale_color_manual(values=c("18S"="firebrick2","28S"="gold1","Shotgun"="deepskyblue2"))+ 
-geom_linerange(aes(x=Nematoda, ymin=Coefficient - SE*interval1, ymax=Coefficient+SE*interval1), lwd=1, position= position_dodge(width=1/2)) +
-geom_pointrange(aes(x=Nematoda, ymin=Coefficient-SE*interval2, ymax=Coefficient+SE*interval2), lwd=1/2, position= position_dodge(width=1/2), shape=21, fill="WHITE") +  
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
-theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
-theme(panel.background =element_rect(fil="white", color="black")) + 
-theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif')) + 
-theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif',face='italic')) + 
-theme(axis.title.x=element_blank()) + 
-theme(axis.ticks.x = element_blank()) + 
-theme(axis.title.y=element_blank()) + 
-theme(plot.title=element_text(size=11, colour='black', family='serif', face="bold")) + 
-theme(legend.title=element_text(size=10, family='serif')) +  
-theme(legend.text=element_text(size=10, family='serif')) + 
-theme(legend.key.size=unit("0.34","cm")) + 
-labs(title="Mock communities with nematode specimens") +
-guides(color = guide_legend(reverse=TRUE)) + ## reverse the legend colors
-theme(legend.position="none") +
-theme(legend.key = element_rect(colour = "white")) +
-coord_flip()
+cor_coef_plot <- 
+  SupplementaryTables |> 
+  filter(!is.na(Nematoda))  |> 
+  mutate(Nematoda = factor(Nematoda, levels = (nematode_order_rev))) |> 
+  ggplot(
+    aes(x = Coefficient,y = Nematoda, color = Sequences, group = Sequences)
+  ) + 
+  geom_vline(xintercept = 0, color = "black", linetype = 2, linewidth = 0.5 )+
+  geom_linerange(
+    aes(
+      xmin = `95%low`, xmax = `95%upp`),
+    position = position_dodge2(width = 0.5),
+    linewidth = 1
+    ) +
+  geom_point( 
+    position = position_dodge2(width = 0.5),
+    fill = "white",
+    size = 3,
+    stroke = 1,
+    shape = 21,
+    alpha = 1
+    ) +
+  theme_bw(base_family = "serif")+
+  facet_wrap(
+    Type ~ .,
+    ncol = 1, 
+    nrow = 2,
+    labeller = labeller(Type = facet_labels),
+    scales = "free"
+  ) +
+  theme(plot.title=element_text(size=12.5, colour='black', family='serif', face="bold")) +
+  scale_x_continuous(breaks = c(-1,0,1))+
+  scale_y_discrete()+
+  scale_color_manual(
+    values = c("#EC1414","#FFD200", "#00AAEC"),
+    guide = guide_legend(override.aes = list(shape = 21, linetype = 0))
+  ) +
+  theme(
+    axis.text.y.left = element_text(face  = "italic", family='serif', size=12),
+    strip.background = element_blank(),
+    strip.text = element_text(face = "bold", hjust = 0, family='serif', size=11),
+    axis.title.x = element_text(size=12, family='serif', face="bold"),
+    axis.title.y = element_text(size=12, family='serif', face="bold"),
+    panel.grid.minor  = element_blank()) +
+ theme(legend.title=element_text(size=11, family='serif')) +  
+ theme(legend.text=element_text(size=11, family='serif')) +
+  coord_cartesian(xlim = c(-1, 1))
 
-pdf("./Figure6_coefficentPlot.pdf", width=5.8, height=6.2)
-Fig6 <- ggarrange(p11,p12,ncol = 1,labels =c('A','B'), common.legend=TRUE, legend="right", font.label=list(color="black", size=13, face="bold",face="serif"))
-Fig6 <-annotate_figure(Fig6,bottom = text_grob("Coefficient", color="black",face="bold",size=11), left=text_grob("Nematoda",color="black",face="bold",family = "serif", size=11, rot=90)) #family = "serif", size = 10.5, face="bold")
-Fig6
-dev.off()
+ggsave(
+  filename = "Figure7 Coefficient_plot.pdf",
+  plot = cor_coef_plot,
+  width = 158,
+  height = (158 * 0.635) * 2,
+  units = "mm",
+  device = cairo_pdf
+)
 
 
 ####################################
