@@ -86,49 +86,81 @@ ggsave("Figure 4_Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 
 ######General ecological group proportion#####
 ######## Figure 5 #########
-Combined <-read.csv("./CombinedALL.csv", header=T)
+Combined <- read.csv("./CombinedALL_DNA.csv", header = TRUE)
 
-#remove the text angle=30, hjust=1
-#reorder taxa
-Combined$Grouping <-factor(Combined$Grouping, levels=c("Tolerant", "Less Sensitive", "Sensitive","Others"))
-#reorder treatment ID
-Combined$Type <-factor(Combined$Type, levels=c("Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
-#set individual samples for plotting
-Combined$Sample <-factor(Combined$Sample, levels=c("Tol1","Tol2","Tol3","Tol","Les1","Les2", "Les3","Les", "Sen1", "Sen2" ,"Sen3", "Sen"))
-Combined$Sequence <-factor(Combined$Sequence, levels=c("18S","28S","Shotgun"))
+#Drop the Other nematoda from the plot
+Combined_NEW <- Combined |>
+  filter(Grouping != "Others")
 
+Combined_NEW$Grouping <- factor(
+  Combined_NEW$Grouping,
+  levels = c("Tolerant", "Less Sensitive", "Sensitive")
+)
 
-#plotting##
-p7<-ggplot(Combined, aes(factor(Sample), Relative, fill=Grouping, order=as.numeric(Grouping))) + 
-geom_bar(stat="identity", width=0.64) + 
-scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total DNA quantity")) +
-scale_fill_manual(values=c("Tolerant"="lightskyblue2", "Less Sensitive"="darkred","Sensitive"="khaki2", "Others"="grey"), name="Response to hypoxia")  + 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
-theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
-theme(panel.background =element_rect(fil="white", color="black")) + 
-theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif', angle = 25,hjust = 1)) + 
-theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
-theme(axis.ticks.x = element_blank()) + 
-theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
-theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
-theme(legend.title=element_text(size=10, family='serif')) +  
-theme(legend.text=element_text(size=10, family='serif')) + 
-theme(legend.key.size=unit("0.34","cm")) + 
-theme(legend.key = element_rect(colour = "white")) +
+Combined_NEW$Type <- factor(
+  Combined_NEW$Type,
+  levels = c("Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance")
+)
 
-#use 'face_grid' function to separate treatments
-facet_grid(Sequence ~ Type, scales="free") + 
-labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
-theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
-theme(strip.background=element_rect(size=1)) + 
-theme(panel.margin=unit(0.18,"line")) + 
-theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
-theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
+Combined_NEW$Sample <- factor(
+  Combined_NEW$Sample,
+  levels = c("Tol1", "Tol2", "Tol3", "Tol",
+             "Les1", "Les2", "Les3", "Les",
+             "Sen1", "Sen2", "Sen3", "Sen")
+)
 
-#pdf("./Figure5A_DNAEcoGroup.pdf", width=7, height=6)
-#p7
-#dev.off()
+Combined_NEW$Sequence <- factor(
+  Combined_NEW$Sequence,
+  levels = c("18S", "28S", "Shotgun")
+)
+
+p7 <- ggplot(
+  Combined_NEW,
+  aes(x = Sample, y = Relative, fill = Grouping, order = as.numeric(Grouping))
+) +
+  geom_bar(stat = "identity", width = 0.64) +
+  scale_y_continuous(
+    name = "Relative abundance (% of total sequence reads)",
+    sec.axis = sec_axis(~ ., name = "Proportion of total DNA quantity")
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Tolerant" = "#C55A11",
+      "Less Sensitive" = "#F4B183",
+      "Sensitive" = "#FBE5D6"
+    ),
+    name = "Hypoxia sensitivity"
+  ) +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.background = element_rect(fill = "white", color = "black"),
+    axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
+    axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
+    axis.title.x = element_text(colour = "black", size = 11, family = "serif"),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_text(colour = "black", size = 11, family = "serif"),
+    plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
+    legend.title = element_text(size = 10, family = "serif"),
+    legend.text = element_text(size = 10, family = "serif"),
+    legend.key.size = unit(0.34, "cm"),
+    legend.key = element_rect(colour = "white"),
+    strip.text = element_text(size = 9, face = "bold", family = "serif"),
+    strip.background = element_rect(linewidth = 1),
+    panel.spacing = unit(0.18, "line"),
+    strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
+    plot.margin = margin(0.03, 0, 0.05, 0.05, "cm")
+  ) +
+  facet_grid(Sequence ~ Type, scales = "free") +
+  labs(
+    title = "",
+    y = "Relative abundance (% of total sequence reads)",
+    x = ""
+  )
+
+p7
 
 #############################################
 #####Taxonomic group at the genus level ######
@@ -173,14 +205,14 @@ theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) +
 theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
 
 ##visualize plot##
-pdf("./Figure5B_DNAEcoGroup.pdf", width=7, height=6)
-p8
-dev.off()
+#pdf("./Figure5B_DNAEcoGroup.pdf", width=7, height=6)
+#p8
+#dev.off()
 
 ##Combine Figure4 A and B
 Fig5 <- ggarrange(p7,p8,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
 Fig5<-annotate_figure(Fig5,top = text_grob("Mock communities with DNA input", color = "black", family = "serif", size = 11, face="bold"))
-pdf("./Figure4Composition_DNAInput.pdf", width=7.3, height=7.5)
+pdf("./Figure5Composition_DNAInput.pdf", width=7.3, height=7.5)
 Fig5
 dev.off()
 
@@ -191,22 +223,31 @@ dev.off()
 ###### Figure 6 #######
 ######General ecological group proportion#####
 CombinedALL_Indiv <-read.csv("./CombinedALL_Indiv.csv", header=T)
-## have been merged Paracanthoncus with closely related and Microlaimus with closely related
+## have been merged Paracanthoncus with closely related and Microlaimus with closely
 
-#remove the text angle=30, hjust=1
+#Drop the Other nematoda from the plot
+CombinedALL_Indiv_NEW <- CombinedALL_Indiv |>
+  filter(Grouping != "Others")
+
 #reorder taxa
-CombinedALL_Indiv$Grouping <-factor(CombinedALL_Indiv$Grouping, levels=c("Tolerant", "Less Sensitive", "Sensitive","Others"))
+CombinedALL_Indiv_NEW$Grouping <-factor(CombinedALL_Indiv_NEW$Grouping, levels=c("Tolerant", "Less Sensitive", "Sensitive"))
 #reorder treatment ID
-CombinedALL_Indiv$Type <-factor(CombinedALL_Indiv$Type, levels=c("Even_Community","Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
+CombinedALL_Indiv_NEW$Type <-factor(CombinedALL_Indiv_NEW$Type, levels=c("Even_Community","Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
 #set individual samples for plotting
-CombinedALL_Indiv$Sample <-factor(CombinedALL_Indiv$Sample, levels=c("Even1","Even2","Even3","Even","Tol1","Tol2", "Tol3","Tol", "Les1", "Les2","Les3","Les", "Sen1", "Sen2", "Sen3","Sen"))
-
+CombinedALL_Indiv_NEW$Sample <-factor(CombinedALL_Indiv_NEW$Sample, levels=c("Even1","Even2","Even3","Even","Tol1","Tol2", "Tol3","Tol", "Les1", "Les2","Les3","Les", "Sen1", "Sen2", "Sen3","Sen"))
 
 #plotting##
-p9<-ggplot(CombinedALL_Indiv, aes(factor(Sample), Relative, fill=Grouping, order=as.numeric(Grouping))) + 
+p9<-ggplot(CombinedALL_Indiv_NEW, aes(factor(Sample), Relative, fill=Grouping, order=as.numeric(Grouping))) + 
 geom_bar(stat="identity", width=0.64) + 
 scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total nematodes")) +
-scale_fill_manual(values=c("Tolerant"="lightskyblue2", "Less Sensitive"="darkred","Sensitive"="khaki2", "Others"="grey"), name="Response to hypoxia")  + 
+scale_fill_manual(
+    values = c(
+      "Tolerant" = "#C55A11",
+      "Less Sensitive" = "#F4B183",
+      "Sensitive" = "#FBE5D6"
+    ),
+    name = "Hypoxia sensitivity"
+  ) + 
 theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
 theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
 theme(panel.background =element_rect(fil="white", color="black")) + 
@@ -226,9 +267,12 @@ facet_grid(Sequence ~ Type, scales="free") +
 labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
 theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
 theme(strip.background=element_rect(size=1)) + 
-theme(panel.margin=unit(0.18,"line")) + 
+theme(panel.spacing=unit(0.18,"line")) + 
 theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
 theme(plot.margin=margin(0.03,0,0.05,0.05,"cm")) 
+
+#to check the figure
+p9 
 
 
 ############################################
