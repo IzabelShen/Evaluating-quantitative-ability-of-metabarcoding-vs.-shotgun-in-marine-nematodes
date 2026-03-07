@@ -80,6 +80,7 @@ theme(panel.margin=unit(0.18,"line")) +
 theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm")))
 ggsave("Figure 4_Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 
+
 ###########################################
 #####Relative read data vs. DNA input######
 ###########################################
@@ -92,7 +93,7 @@ library(ggpubr)
 library(grid)
 
 ###### General ecological group proportion #####
-######## Figure 5 #########
+######## Figure 5 A#########
 
 Combined <- read.csv("./CombinedALL_DNA.csv", header = TRUE)
 
@@ -133,10 +134,10 @@ p7 <- ggplot(
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    name = "Observed relative abundance",
     sec.axis = sec_axis(
       transform = ~ .,
-      name = expression(atop(bold("Expected proportion"), "(% of total DNA quantity)"))
+      name = "Expected proportion"
     )
   ) +
   scale_fill_manual(
@@ -159,18 +160,18 @@ p7 <- ggplot(
     panel.grid.minor.x = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.background = element_rect(fill = "white", color = "black"),
-    axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
-    axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
+    axis.text.x = element_text(colour = "black", size = 11, family = "serif", angle = 25, hjust = 1),
+    axis.text.y = element_text(colour = "black", size = 11, family = "serif"),
     axis.title.x = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.ticks.x = element_blank(),
     axis.title.y = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
-    plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
+    plot.title = element_text(size = 13, colour = "black", face = "bold", family = "serif"),
     legend.title = element_text(size = 10, family = "serif"),
     legend.text = element_text(size = 10, family = "serif"),
     legend.key.size = unit(0.34, "cm"),
     legend.key = element_rect(colour = "white"),
-    strip.text = element_text(size = 9, face = "bold", family = "serif"),
+    strip.text = element_text(size = 10, family = "serif"),
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
@@ -180,7 +181,7 @@ p7 <- ggplot(
 p7
 
 #############################################
-##### Taxonomic group at the genus level ####
+##### Figure 5 B Taxonomic group at the genus level ####
 #############################################
 
 CombinedTaxa <- read.csv("./CombinedTaxaALL_DNA.csv", header = TRUE)
@@ -220,10 +221,10 @@ p8 <- ggplot(
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    name = "Observed relative abundance",
     sec.axis = sec_axis(
       transform = ~ .,
-      name = expression(atop(bold("Expected proportion"), "(% of total DNA quantity)"))
+      name = "Expected proportion"
     )
   ) +
   scale_fill_manual(
@@ -251,25 +252,23 @@ p8 <- ggplot(
     panel.grid.minor.x = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.background = element_rect(fill = "white", color = "black"),
-    axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
-    axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
+    axis.text.x = element_text(colour = "black", size = 11, family = "serif", angle = 25, hjust = 1),
+    axis.text.y = element_text(colour = "black", size = 11, family = "serif"),
     axis.title.x = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.ticks.x = element_blank(),
     axis.title.y = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
-    plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
+    plot.title = element_text(size = 13, colour = "black", face = "bold", family = "serif"),
     legend.title = element_text(size = 10, family = "serif"),
     legend.text = element_text(size = 10, family = "serif", face = "italic"),
     legend.key.size = unit(0.34, "cm"),
     legend.key = element_rect(colour = "white"),
-    strip.text = element_text(size = 9, face = "bold", family = "serif"),
+    strip.text = element_text(size = 10, family = "serif"),
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
     plot.margin = margin(0, 0, 0, 0.05, "cm")
   )
-
-p8
 
 ############################################
 ############ combine the plots #############
@@ -288,7 +287,7 @@ Fig5 <- annotate_figure(
     "Mock communities with DNA input",
     color = "black",
     family = "serif",
-    size = 11,
+    size = 12,
     face = "bold"
   ),
   bottom = text_grob(
@@ -300,7 +299,7 @@ Fig5 <- annotate_figure(
   )
 )
 
-pdf("./Figure5Composition_DNAInput.pdf", width = 7.1, height = 7.5)
+pdf("./Figure5Composition_DNAInput.pdf", width = 7.4, height = 7.7)
 Fig5
 dev.off()
 
@@ -354,10 +353,10 @@ p9 <- ggplot(
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    name = "Observed relative abundance",
     sec.axis = sec_axis(
       transform = ~ .,
-      name = expression(atop(bold("Expected proportion"), "(% of total nematodes)"))
+      name = "Expected proportion"
     )
   ) +
   scale_fill_manual(
@@ -382,16 +381,16 @@ p9 <- ggplot(
     panel.background = element_rect(fill = "white", color = "black"),
     axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
     axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
-    axis.title.x = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.x = element_text(colour = "black", size = 11, family = "serif",face="bold"),
     axis.ticks.x = element_blank(),
-    axis.title.y = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.y = element_text(colour = "black", size = 11, family = "serif", face="bold"),
     axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
     legend.title = element_text(size = 10, family = "serif"),
     legend.text = element_text(size = 10, family = "serif"),
     legend.key.size = unit(0.34, "cm"),
     legend.key = element_rect(colour = "white"),
-    strip.text = element_text(size = 9, face = "bold", family = "serif"),
+    strip.text = element_text(size = 10, family = "serif"),
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
@@ -444,10 +443,10 @@ p10 <- ggplot(
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    name = "Observed relative abundance",
     sec.axis = sec_axis(
       transform = ~ .,
-      name = expression(atop(bold("Expected proportion"), "(% of total nematodes)"))
+      name = "Expected proportion"
     )
   ) +
   scale_fill_manual(
@@ -477,8 +476,8 @@ p10 <- ggplot(
     panel.background = element_rect(fill = "white", color = "black"),
     axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
     axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
-    axis.title.x = element_text(colour = "black", size = 11, family = "serif"),
-    axis.title.y = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.x = element_text(colour = "black", size = 11, family = "serif", face="bold"),
+    axis.title.y = element_text(colour = "black", size = 11, family = "serif", face="bold"),
     axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.ticks.x = element_blank(),
     plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
@@ -486,7 +485,7 @@ p10 <- ggplot(
     legend.text = element_text(size = 10, family = "serif", face = "italic"),
     legend.key.size = unit(0.34, "cm"),
     legend.key = element_rect(colour = "white"),
-    strip.text = element_text(size = 9, face = "bold", family = "serif"),
+    strip.text = element_text(size = 10, family = "serif"),
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
@@ -510,7 +509,7 @@ Fig6 <- annotate_figure(
     "Mock communities with nematode specimens",
     color = "black",
     family = "serif",
-    size = 11,
+    size = 12,
     face = "bold"
   ),
   bottom = text_grob(
@@ -522,7 +521,7 @@ Fig6 <- annotate_figure(
   )
 )
 
-pdf("./Figure6Composition_Indiv.pdf", width = 8.5, height = 7.5)
+pdf("./Figure6Composition_Indiv.pdf", width = 8.9, height = 7.7)
 Fig6
 dev.off()
 
