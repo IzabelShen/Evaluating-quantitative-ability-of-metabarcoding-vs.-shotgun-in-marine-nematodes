@@ -314,6 +314,7 @@ library(dplyr)
 library(ggplot2)
 library(ggpubr)
 library(grid)
+
 CombinedALL_Indiv <- read.csv("./CombinedALL_Indiv.csv", header = TRUE)
 
 CombinedALL_Indiv_NEW <- CombinedALL_Indiv |>
@@ -353,8 +354,11 @@ p9 <- ggplot(
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = "Relative abundance (% of total sequence reads)",
-    sec.axis = sec_axis(transform = ~ ., name = "Proportion of total nematodes")
+    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    sec.axis = sec_axis(
+      transform = ~ .,
+      name = expression(atop(bold("Expected proportion"), "(% of total nematodes)"))
+    )
   ) +
   scale_fill_manual(
     values = c(
@@ -367,7 +371,7 @@ p9 <- ggplot(
   facet_grid(Sequence ~ Type, scales = "free") +
   labs(
     title = "",
-    y = "Relative abundance (% of total sequence reads)",
+    y = NULL,
     x = ""
   ) +
   theme(
@@ -381,6 +385,7 @@ p9 <- ggplot(
     axis.title.x = element_text(colour = "black", size = 11, family = "serif"),
     axis.ticks.x = element_blank(),
     axis.title.y = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
     legend.title = element_text(size = 10, family = "serif"),
     legend.text = element_text(size = 10, family = "serif"),
@@ -390,7 +395,7 @@ p9 <- ggplot(
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
-    plot.margin = margin(0.03, 0, 0.05, 0.05, "cm")
+    plot.margin = margin(0, 0, 0, 0.05, "cm")
   )
 
 ############################################
@@ -439,8 +444,11 @@ p10 <- ggplot(
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = "Relative abundance (% of total sequence reads)",
-    sec.axis = sec_axis(transform = ~ ., name = "Proportion of total nematodes")
+    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    sec.axis = sec_axis(
+      transform = ~ .,
+      name = expression(atop(bold("Expected proportion"), "(% of total nematodes)"))
+    )
   ) +
   scale_fill_manual(
     values = c(
@@ -459,7 +467,7 @@ p10 <- ggplot(
   labs(
     title = "",
     x = "",
-    y = "Relative abundance (% of total sequence reads)"
+    y = NULL
   ) +
   theme(
     panel.grid.minor.y = element_blank(),
@@ -471,6 +479,7 @@ p10 <- ggplot(
     axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
     axis.title.x = element_text(colour = "black", size = 11, family = "serif"),
     axis.title.y = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.ticks.x = element_blank(),
     plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
     legend.title = element_text(size = 10, family = "serif"),
@@ -481,7 +490,7 @@ p10 <- ggplot(
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
-    plot.margin = margin(0.03, 0, 0.05, 0.05, "cm")
+    plot.margin = margin(0, 0, 0, 0.05, "cm")
   )
 
 ############################################
@@ -499,6 +508,13 @@ Fig6 <- annotate_figure(
   Fig6,
   top = text_grob(
     "Mock communities with nematode specimens",
+    color = "black",
+    family = "serif",
+    size = 11,
+    face = "bold"
+  ),
+  bottom = text_grob(
+    "Mock assembly",
     color = "black",
     family = "serif",
     size = 11,
