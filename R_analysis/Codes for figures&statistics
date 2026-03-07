@@ -586,11 +586,11 @@ cor_coef_plot <-
   geom_vline(xintercept = 0, color = "black", linetype = 2, linewidth = 0.5) +
   geom_linerange(
     aes(xmin = `95%low`, xmax = `95%upp`),
-    position = position_dodge2(width = 0.5),
+    position = position_dodge2(width = 0.5, reverse=TRUE),
     linewidth = 1
   ) +
   geom_point(
-    position = position_dodge2(width = 0.5),
+    position = position_dodge2(width = 0.5, reverse=TRUE),
     fill = "white",
     size = 3,
     stroke = 1,
