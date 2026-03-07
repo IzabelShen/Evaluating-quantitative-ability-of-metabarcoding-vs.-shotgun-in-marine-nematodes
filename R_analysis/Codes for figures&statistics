@@ -569,29 +569,35 @@ nematode_order <- c(
 )
 nematode_order_rev <- rev(nematode_order)
 
+#### Put the Sequences in the order you want to appear:
+#### top = red, middle = yellow, bottom = blue
+sequence_order <-c("18S","28S","Shotgun")
+
 cor_coef_plot <- 
   SupplementaryTables |> 
-  filter(!is.na(Nematoda))  |> 
-  mutate(Nematoda = factor(Nematoda, levels = (nematode_order_rev))) |> 
+  filter(!is.na(Nematoda)) |> 
+  mutate(
+    Nematoda = factor(Nematoda, levels = nematode_order_rev),
+    Sequences = factor(Sequences, levels = sequence_order)
+  ) |> 
   ggplot(
-    aes(x = Coefficient,y = Nematoda, color = Sequences, group = Sequences)
+    aes(x = Coefficient, y = Nematoda, color = Sequences, group = Sequences)
   ) + 
-  geom_vline(xintercept = 0, color = "black", linetype = 2, linewidth = 0.5 )+
+  geom_vline(xintercept = 0, color = "black", linetype = 2, linewidth = 0.5) +
   geom_linerange(
-    aes(
-      xmin = `95%low`, xmax = `95%upp`),
+    aes(xmin = `95%low`, xmax = `95%upp`),
     position = position_dodge2(width = 0.5),
     linewidth = 1
-    ) +
-  geom_point( 
+  ) +
+  geom_point(
     position = position_dodge2(width = 0.5),
     fill = "white",
     size = 3,
     stroke = 1,
     shape = 21,
     alpha = 1
-    ) +
-  theme_bw(base_family = "serif")+
+  ) +
+  theme_bw(base_family = "serif") +
   facet_wrap(
     Type ~ .,
     ncol = 1, 
@@ -599,22 +605,23 @@ cor_coef_plot <-
     labeller = labeller(Type = facet_labels),
     scales = "free"
   ) +
-  theme(plot.title=element_text(size=13, colour='black', family='serif', face="bold")) +
-  scale_x_continuous(breaks = c(-1,0,1))+
-  scale_y_discrete()+
+  theme(plot.title = element_text(size = 13, colour = "black", family = "serif", face = "bold")) +
+  scale_x_continuous(breaks = c(-1, 0, 1)) +
+  scale_y_discrete() +
   scale_color_manual(
-    values = c("#EC1414","#FFD200", "#00AAEC"),
+    values = c("#EC1414", "#FFD200", "#00AAEC"),
     guide = guide_legend(override.aes = list(shape = 21, linetype = 0))
   ) +
   theme(
-    axis.text.y.left = element_text(face  = "italic", family='serif', size=12),
+    axis.text.y.left = element_text(face = "italic", family = "serif", size = 12),
     strip.background = element_blank(),
-    strip.text = element_text(face = "bold",  family='serif', size=12),
-    axis.title.x = element_text(size=12, family='serif', face="bold"),
-    axis.title.y = element_text(size=12, family='serif', face="bold"),
-    panel.grid.minor  = element_blank()) +
- theme(legend.title=element_text(size=11, family='serif')) +  
- theme(legend.text=element_text(size=11, family='serif')) +
+    strip.text = element_text(face = "bold", family = "serif", size = 12),
+    axis.title.x = element_text(size = 12, family = "serif", face = "bold"),
+    axis.title.y = element_text(size = 12, family = "serif", face = "bold"),
+    panel.grid.minor = element_blank()
+  ) +
+  theme(legend.title = element_text(size = 11, family = "serif")) +  
+  theme(legend.text = element_text(size = 11, family = "serif")) +
   coord_cartesian(xlim = c(-1, 1))
 
 ggsave(
