@@ -32,54 +32,75 @@ library("ggthemes") # use themes to clean up the data visualizations
 library("RColorBrewer") # for multiple color palettes
 library("readxl") # to read excel files
 library("tidyverse") # to import, transform, visualize, and summarize data
+library("ggsignif") # to add the significance level of statistical output to plot directly
 
 setwd("./inputfiles/")
 
 ############## Figure 4#############
 ######################
 #############Bray-Curtis dissimilarity matrix on mock community composition estimated from relative read abundance vs. expected proportions ######
-Dists_joins <-read_excel("Dists_joins.xlsx")
+library(readxl)
+library(ggplot2)
+library(ggsignif)
+library(grid)
 
-set.seed(123) # Pick any number you like to  set seed to make jittered points consistent (reproducible)
+Dists_joins <- read_excel("Dists_joins.xlsx")
+
+set.seed(123)
+
 my_comparisons <- list(
   c("18S", "28S"),
   c("28S", "Shotgun"),
-  c("18S", "Shotgun"))
+  c("18S", "Shotgun")
+)
 
-Dists_joins$Sequence <-factor(Dists_joins$Sequence, levels=c("18S","28S","Shotgun"))
+Dists_joins$Sequence <- factor(Dists_joins$Sequence, levels = c("18S", "28S", "Shotgun"))
+
 p20 <- ggplot(Dists_joins, aes(y = Distance, x = Sequence, fill = Sequence, color = Sequence)) + 
-    geom_boxplot(alpha = 0.5, outlier.shape = NA, width = 0.45) +
-    geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.6),
-                size = 2.5, shape = 21, aes(fill = Sequence, color = Sequence)) +
-    scale_fill_manual(values = c("18S" = "firebrick2", "28S" = "gold1", "Shotgun" = "deepskyblue2")) +
-    scale_color_manual(values = c("18S" = "firebrick2", "28S" = "gold1", "Shotgun" = "deepskyblue2")) +
-    theme(panel.grid.minor.y = element_blank(),
-          panel.grid.major.y = element_blank(),
-          panel.background = element_rect(fill = 'white', colour = 'black'),
-          axis.text.x = element_text(colour = 'black', size = 10, family = 'serif'),
-          axis.text.y = element_text(colour = 'black', size = 10, family = 'serif'),
-          axis.title.x = element_text(colour = 'black', size = 11, family = 'serif', face = 'bold'),
-          axis.title.y = element_text(colour = 'black', size = 11, family = 'serif', face = 'bold'),
-          legend.title = element_text(size = 10, family = 'serif'),
-          legend.text = element_text(size = 10, family = 'serif'),
-          axis.ticks.y = element_blank(),
-          plot.title = element_text(size = 12, colour = 'black', face = 'bold', family = 'serif'),
-          legend.position = "right") +
-    labs(title = "Observed reads vs. expected proportions", y = "Bray-Curtis dissimilarity\n based on genus level", x = "Sequence") +
-    geom_signif(comparisons = my_comparisons,
-                step_increase = 0.1,
-                map_signif_level = TRUE,
-                test = wilcox.test,
-                color = 'black',
-                textsize = 2.8,
-                family = 'serif') +
-    facet_wrap(~ MockType) + 
-    guides(fill = "none", color = "none") +
-    theme(strip.text=element_text(size=11, family='serif')) + 
-theme(panel.margin=unit(0.18,"line")) + 
-theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm")))
-ggsave("Figure 4_Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
+  geom_boxplot(alpha = 0.5, outlier.shape = NA, width = 0.45) +
+  geom_jitter(
+    position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.6),
+    size = 2.5,
+    shape = 21,
+    aes(fill = Sequence, color = Sequence)
+  ) +
+  scale_fill_manual(values = c("18S" = "firebrick2", "28S" = "gold1", "Shotgun" = "deepskyblue2")) +
+  scale_color_manual(values = c("18S" = "firebrick2", "28S" = "gold1", "Shotgun" = "deepskyblue2")) +
+  labs(
+    title = "Observed reads vs. expected proportions",
+    y = "Bray-Curtis dissimilarity",
+    x = "Sequence"
+  ) +
+  geom_signif(
+    comparisons = my_comparisons,
+    step_increase = 0.1,
+    map_signif_level = TRUE,
+    test = wilcox.test,
+    color = "black",
+    textsize = 2.8,
+    family = "serif"
+  ) +
+  facet_wrap(~ MockType) + 
+  guides(fill = "none", color = "none") +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.background = element_rect(fill = "white", colour = "black"),
+    axis.text.x = element_text(colour = "black", size = 11, family = "serif"),
+    axis.text.y = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.x = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
+    axis.title.y = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
+    legend.title = element_text(size = 10, family = "serif"),
+    legend.text = element_text(size = 10, family = "serif"),
+    axis.ticks.y = element_blank(),
+    plot.title = element_text(size = 12, colour = "black", face = "bold", family = "serif"),
+    legend.position = "right",
+    strip.text = element_text(size = 11, family = "serif"),
+    panel.spacing = unit(0.18, "line"),
+    strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm"))
+  )
 
+ggsave("Figure 4_Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 
 ###########################################
 #####Relative read data vs. DNA input######
