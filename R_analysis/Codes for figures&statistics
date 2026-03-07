@@ -605,11 +605,12 @@ cor_coef_plot <-
     labeller = labeller(Type = facet_labels),
     scales = "free"
   ) +
+  labs(x="Correlation coefficient", y="Nematoda", color=NULL)+
   theme(plot.title = element_text(size = 13, colour = "black", family = "serif", face = "bold")) +
   scale_x_continuous(breaks = c(-1, 0, 1)) +
   scale_y_discrete() +
   scale_color_manual(
-    values = c("#EC1414", "#FFD200", "#00AAEC"),
+    values = c("18S"="#EC1414", "28S"="#FFD200", "Shotgun"="#00AAEC"),
     guide = guide_legend(override.aes = list(shape = 21, linetype = 0))
   ) +
   theme(
