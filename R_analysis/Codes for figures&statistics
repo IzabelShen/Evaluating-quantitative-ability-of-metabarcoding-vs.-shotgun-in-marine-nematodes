@@ -86,12 +86,21 @@ ggsave("Figure 4_Dissimilarityindex_all.pdf", plot = p20, width = 5, height = 5)
 
 ######General ecological group proportion#####
 ######## Figure 5 #########
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(grid)
+
+###### General ecological group proportion #####
+######## Figure 5 #########
+
 Combined <- read.csv("./CombinedALL_DNA.csv", header = TRUE)
 
-#Drop the Other nematoda from the plot
+# Drop "Others" from the plot
 Combined_NEW <- Combined |>
   filter(Grouping != "Others")
 
+# Reorder factors
 Combined_NEW$Grouping <- factor(
   Combined_NEW$Grouping,
   levels = c("Tolerant", "Less Sensitive", "Sensitive")
@@ -104,9 +113,11 @@ Combined_NEW$Type <- factor(
 
 Combined_NEW$Sample <- factor(
   Combined_NEW$Sample,
-  levels = c("Tol1", "Tol2", "Tol3", "Tol",
-             "Les1", "Les2", "Les3", "Les",
-             "Sen1", "Sen2", "Sen3", "Sen")
+  levels = c(
+    "Tol1", "Tol2", "Tol3", "Tol",
+    "Les1", "Les2", "Les3", "Les",
+    "Sen1", "Sen2", "Sen3", "Sen"
+  )
 )
 
 Combined_NEW$Sequence <- factor(
@@ -114,14 +125,19 @@ Combined_NEW$Sequence <- factor(
   levels = c("18S", "28S", "Shotgun")
 )
 
+Combined_NEW$Relative <- as.numeric(Combined_NEW$Relative)
+
 p7 <- ggplot(
   Combined_NEW,
   aes(x = Sample, y = Relative, fill = Grouping, order = as.numeric(Grouping))
 ) +
   geom_bar(stat = "identity", width = 0.64) +
   scale_y_continuous(
-    name = "Relative abundance (% of total sequence reads)",
-    sec.axis = sec_axis(~ ., name = "Proportion of total DNA quantity")
+    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    sec.axis = sec_axis(
+      transform = ~ .,
+      name = expression(atop(bold("Expected proportion"), "(% of total DNA quantity)"))
+    )
   ) +
   scale_fill_manual(
     values = c(
@@ -131,6 +147,12 @@ p7 <- ggplot(
     ),
     name = "Hypoxia sensitivity"
   ) +
+  facet_grid(Sequence ~ Type, scales = "free") +
+  labs(
+    title = "",
+    x = "",
+    y = NULL
+  ) +
   theme(
     panel.grid.minor.y = element_blank(),
     panel.grid.major.y = element_blank(),
@@ -139,9 +161,10 @@ p7 <- ggplot(
     panel.background = element_rect(fill = "white", color = "black"),
     axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
     axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
-    axis.title.x = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.x = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     axis.ticks.x = element_blank(),
-    axis.title.y = element_text(colour = "black", size = 11, family = "serif"),
+    axis.title.y = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
+    axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
     plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
     legend.title = element_text(size = 10, family = "serif"),
     legend.text = element_text(size = 10, family = "serif"),
@@ -151,82 +174,146 @@ p7 <- ggplot(
     strip.background = element_rect(linewidth = 1),
     panel.spacing = unit(0.18, "line"),
     strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
-    plot.margin = margin(0.03, 0, 0.05, 0.05, "cm")
-  ) +
-  facet_grid(Sequence ~ Type, scales = "free") +
-  labs(
-    title = "",
-    y = "Relative abundance (% of total sequence reads)",
-    x = ""
+    plot.margin = margin(0, 0, 0, 0.05, "cm")
   )
 
 p7
 
 #############################################
-#####Taxonomic group at the genus level ######
-##############################################
-##adjusted Combined table##
-CombinedTaxa <-read.csv("./CombinedTaxaALL.csv", header=T)
+##### Taxonomic group at the genus level ####
+#############################################
 
-#remove the text angle=30, hjust=1
-#reorder taxa
-CombinedTaxa$Nematoda <-factor(CombinedTaxa$Nematoda, levels=c("Sabatieria", "Halomonhystera", "Leptolaimus", "Paracanthonchus", "Microlaimus", "Daptonema","Axonolaimus", "Desmolaimus"))
-#reorder treatment ID
-CombinedTaxa$Type <-factor(CombinedTaxa$Type, levels=c("Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance"))
-#set individual samples for plotting
-CombinedTaxa$Sample <-factor(CombinedTaxa$Sample, levels=c("Tol1","Tol2","Tol3","Tol","Les1","Les2", "Les3", "Les","Sen1", "Sen2","Sen3", "Sen"))
+CombinedTaxa <- read.csv("./CombinedTaxaALL_DNA.csv", header = TRUE)
 
-#plotting taxonomic composition#
-p8<-ggplot(CombinedTaxa, aes(factor(Sample), Relative, fill=Nematoda, order=as.numeric(Nematoda))) + 
-geom_bar(stat="identity", width=0.64) + 
-scale_y_continuous(name="Relative abundance % (of total sequence reads)",sec.axis=sec_axis(trans=~., name="Proportion of total DNA quantity")) +  #dual y axises
-scale_fill_manual(values=c("Sabatieria"="midnightblue","Halomonhystera"="lightskyblue2","Leptolaimus"="steelblue3","Paracanthonchus"="darkgreen", "Microlaimus"="forestgreen", "Daptonema"="darkseagreen2", "Axonolaimus"="darkmagenta","Desmolaimus"= "plum1"), name="Nematoda")  + 
-theme(panel.grid.minor.y=element_blank(),panel.grid.major.y=element_blank()) + 
-theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank()) + 
-theme(panel.background =element_rect(fil="white", color="black")) + 
-theme(axis.text.x =element_text(colour = 'black', size = 10, family='serif', angle = 25,hjust = 1)) + 
-theme(axis.text.y=element_text(colour = 'black', size = 10, family='serif')) + 
-theme(axis.title.x=element_text(colour = 'black',size = 11, family='serif')) + 
-theme(axis.ticks.x = element_blank()) + 
-theme(axis.title.y=element_text(colour = 'black',size = 11, family='serif')) + 
-theme(plot.title=element_text(size=11, colour='black', face='bold', family='serif')) + 
-theme(legend.title=element_text(size=10, family='serif')) +  
-theme(legend.text=element_text(size=10, family='serif', face='italic')) + 
-theme(legend.key.size=unit("0.34","cm")) + 
-theme(legend.key = element_rect(colour = "white")) +
+CombinedTaxa$Nematoda <- factor(
+  CombinedTaxa$Nematoda,
+  levels = c(
+    "Sabatieria", "Halomonhystera", "Leptolaimus", "Paracanthonchus",
+    "Microlaimus", "Daptonema", "Axonolaimus", "Desmolaimus"
+  )
+)
 
-#use 'face_grid' function to separate treatments
-facet_grid(Sequence ~ Type, scales="free") + 
-labs(title="", y="Relative abundance (% of total sequence reads)", x="") + 
-theme(strip.text=element_text(size=9,face='bold', family='serif')) + 
-theme(strip.background=element_rect(size=1)) + 
-theme(panel.margin=unit(0.18,"line")) + 
-theme(strip.text.x=element_text(margin=margin(0.09,0,0.09,0,"cm"))) + 
-theme(plot.margin=margin(0.03,0,0.05,0.05,"cm"))
+CombinedTaxa$Type <- factor(
+  CombinedTaxa$Type,
+  levels = c("Tolerant_Dominance", "Less Sensitive_Dominance", "Sensitive_Dominance")
+)
 
-##visualize plot##
-#pdf("./Figure5B_DNAEcoGroup.pdf", width=7, height=6)
-#p8
-#dev.off()
+CombinedTaxa$Sample <- factor(
+  CombinedTaxa$Sample,
+  levels = c(
+    "Tol1", "Tol2", "Tol3", "Tol",
+    "Les1", "Les2", "Les3", "Les",
+    "Sen1", "Sen2", "Sen3", "Sen"
+  )
+)
 
-##Combine Figure4 A and B
-Fig5 <- ggarrange(p7,p8,ncol = 1,labels =c('A','B'), font.label=list(color="black", size=13, face="bold",face="serif")) #font.label = list(size = 11, color = "black", face = "bold", family = "serif")
-Fig5<-annotate_figure(Fig5,top = text_grob("Mock communities with DNA input", color = "black", family = "serif", size = 11, face="bold"))
-pdf("./Figure5Composition_DNAInput.pdf", width=7.3, height=7.5)
+CombinedTaxa$Sequence <- factor(
+  CombinedTaxa$Sequence,
+  levels = c("18S", "28S", "Shotgun")
+)
+
+CombinedTaxa$Relative <- as.numeric(CombinedTaxa$Relative)
+
+p8 <- ggplot(
+  CombinedTaxa,
+  aes(x = Sample, y = Relative, fill = Nematoda, order = as.numeric(Nematoda))
+) +
+  geom_bar(stat = "identity", width = 0.64) +
+  scale_y_continuous(
+    name = expression(atop(bold("Observed relative abundance"), "(% of total sequence reads)")),
+    sec.axis = sec_axis(
+      transform = ~ .,
+      name = expression(atop(bold("Expected proportion"), "(% of total DNA quantity)"))
+    )
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Sabatieria" = "midnightblue",
+      "Halomonhystera" = "lightskyblue2",
+      "Leptolaimus" = "steelblue3",
+      "Paracanthonchus" = "darkgreen",
+      "Microlaimus" = "forestgreen",
+      "Daptonema" = "darkseagreen2",
+      "Axonolaimus" = "darkmagenta",
+      "Desmolaimus" = "plum1"
+    ),
+    name = "Nematoda"
+  ) +
+  facet_grid(Sequence ~ Type, scales = "free") +
+  labs(
+    title = "",
+    x = "",
+    y = NULL
+  ) +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.background = element_rect(fill = "white", color = "black"),
+    axis.text.x = element_text(colour = "black", size = 10, family = "serif", angle = 25, hjust = 1),
+    axis.text.y = element_text(colour = "black", size = 10, family = "serif"),
+    axis.title.x = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
+    axis.title.y.right = element_text(colour = "black", size = 11, family = "serif", face = "bold"),
+    plot.title = element_text(size = 11, colour = "black", face = "bold", family = "serif"),
+    legend.title = element_text(size = 10, family = "serif"),
+    legend.text = element_text(size = 10, family = "serif", face = "italic"),
+    legend.key.size = unit(0.34, "cm"),
+    legend.key = element_rect(colour = "white"),
+    strip.text = element_text(size = 9, face = "bold", family = "serif"),
+    strip.background = element_rect(linewidth = 1),
+    panel.spacing = unit(0.18, "line"),
+    strip.text.x = element_text(margin = margin(0.09, 0, 0.09, 0, "cm")),
+    plot.margin = margin(0, 0, 0, 0.05, "cm")
+  )
+
+p8
+
+############################################
+############ combine the plots #############
+############################################
+
+Fig5 <- ggarrange(
+  p7, p8,
+  ncol = 1,
+  labels = c("A", "B"),
+  font.label = list(color = "black", size = 13, face = "bold", family = "serif")
+)
+
+Fig5 <- annotate_figure(
+  Fig5,
+  top = text_grob(
+    "Mock communities with DNA input",
+    color = "black",
+    family = "serif",
+    size = 11,
+    face = "bold"
+  ),
+  bottom = text_grob(
+    "Mock assembly",
+    color = "black",
+    family = "serif",
+    size = 11,
+    face = "bold"
+  )
+)
+
+pdf("./Figure5Composition_DNAInput.pdf", width = 7.1, height = 7.5)
 Fig5
 dev.off()
 
 
+
+#######################################################
+###### Figure 6A: ecological group composition ########
+#######################################################
 library(readxl)
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
 library(grid)
-
-#######################################################
-###### Figure 6A: ecological group composition ########
-#######################################################
-
 CombinedALL_Indiv <- read.csv("./CombinedALL_Indiv.csv", header = TRUE)
 
 CombinedALL_Indiv_NEW <- CombinedALL_Indiv |>
@@ -743,7 +830,7 @@ cor_coef_plot <-
     labeller = labeller(Type = facet_labels),
     scales = "free"
   ) +
-  labs(x="Correlation coefficient", y="Nematoda", color=NULL)+
+  labs(x="Correlation coefficient", y="Nematoda", color="Sequence")+
   theme(plot.title = element_text(size = 13, colour = "black", family = "serif", face = "bold")) +
   scale_x_continuous(breaks = c(-1, 0, 1)) +
   scale_y_discrete() +
